@@ -22,7 +22,7 @@ Massa de Teste: src/test/resources
 
     Java JDK 21
     Maven
-    API do Ecommerce* rodando via Docker conforme instruções do projeto [E-commerce API](https://github.com/renansalves/E-Commerce-API).
+    API do Ecommerce* 
 
 * rodando via Docker conforme instruções do projeto [E-commerce API](https://github.com/renansalves/E-Commerce-API).
 
