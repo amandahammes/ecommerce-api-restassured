@@ -119,4 +119,4 @@ CART
 | CT-111 | Adicionar produto inexistente/inativo no carrinho.                | POST   | /cart/items          | Status 404. Message: Produto não encontrado ou inativo.            |
 | CT-112 | Adicionar quantidade de produto maior que disponível no carrinho. | POST   | /cart/items          | Status 400. Message: Estoque insuficiente.                         |
 | CT-113 | Deletar carrinho com Checkout finalizado.                         | DELETE | /cart                | ?                                                                  |
-| CT-114 | Deletar item do carrinho com Checkout finalizado.                 | DELETE |                      | Status 404. Message: Carrinho vazio ou não encontrado.             |
+| CT-114 | Deletar item do carrinho com Checkout finalizado.                 | DELETE | /cart/items/id       | Status 404. Message: Carrinho vazio ou não encontrado.             |
