@@ -1,6 +1,6 @@
 package br.com.ecommerce.service;
 
-import br.com.ecommerce.dataFactory.UserDataFactory;
+import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.model.User;
 import io.restassured.http.ContentType;
 
@@ -9,7 +9,7 @@ import static io.restassured.RestAssured.given;
 public class UserService {
 
 public static User createUser(){
-        User randomUser = UserDataFactory.createRandomUser();
+        User randomUser = DataFactory.createRandomUser();
         given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
@@ -33,6 +33,7 @@ public static User createUser(){
                 .post("/users/login")
                 .then()
                 .statusCode(200)
-                .extract().path("token");
+                .extract()
+                .path("token");
     }
 }
