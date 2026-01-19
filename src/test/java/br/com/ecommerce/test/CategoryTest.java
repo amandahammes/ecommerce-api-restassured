@@ -58,4 +58,60 @@ public class CategoryTest {
                 .body("name", equalTo(category.getName()))
                 .body("description", equalTo(category.getDescription()));
     }
+    @Test
+    @DisplayName("Deve ter sucesso ao alterar Categoria com informações válidas")
+    public void shouldPutCategorySuccessfullyWithValidInformation() {
+        Category category = CategoryService.createCategory();
+        String token = CategoryService.getToken();
+        String categoryNewName = "AAAAAAA";
+        category.setName(categoryNewName);
+        given()
+                .header("Authorization", token)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(category)
+                .when()
+                .put("/categories/admin/{id}", category.getId())
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("id", equalTo(category.getId()))
+                .body("name", equalTo(categoryNewName));
+    }
+
+    @Test
+    @DisplayName("Deve ter sucesso ao deletar Categoria")
+    public void shouldDeleteCategorySuccessfullyWithValidInformation() {
+        Category category = CategoryService.createCategory();
+        String token = CategoryService.getToken();
+        given()
+                .header("Authorization", token)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .delete("/categories/admin/{id}", category.getId())
+                .then()
+                .log().all()
+                .statusCode(204);
+    }
+    @Test
+    @DisplayName("Deve ter sucesso ao pegar Categoria com informações válidas")
+    public void shouldGetAllCategoriesSuccessfullyWithValidInformation() {
+        Category category1 = CategoryService.createCategory();
+        Category category2 = CategoryService.createCategory();
+        String token = CategoryService.getToken();
+        given()
+                .header("Authorization", token)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/categories")
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("size()", greaterThanOrEqualTo(2))
+                .body("content.id", hasItems(category1.getId(), category2.getId()))
+                .body("content.name", hasItems(category1.getName(), category2.getName()));;
+    }
+
 }

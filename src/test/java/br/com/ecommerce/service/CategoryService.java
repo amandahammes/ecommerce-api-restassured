@@ -23,7 +23,6 @@ public class CategoryService {
                 .when()
                 .post("/categories/admin")
                 .then()
-                .log().all()
                 .statusCode(201)
                 .body("id", notNullValue())
                 .body("id", instanceOf(Integer.class))

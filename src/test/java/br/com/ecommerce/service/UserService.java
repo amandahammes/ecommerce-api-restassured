@@ -17,7 +17,6 @@ public static User createUser(){
                 .when()
                 .post("/users/register")
                 .then()
-                .log().all()
                 .statusCode(201);
         return randomUser;
     }
