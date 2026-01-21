@@ -1,6 +1,7 @@
 package br.com.ecommerce.dataFactory;
 
 import br.com.ecommerce.model.Category;
+import br.com.ecommerce.model.Product;
 import br.com.ecommerce.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
@@ -24,6 +25,18 @@ public class DataFactory {
         return new Category(
                 faker.commerce().department(),
                 faker.lorem().sentence(5)
+        );
+    }
+
+    public static Product createRandomProduct(Integer categoryId) {
+        return new Product(
+                faker.number().digits(5),
+                faker.commerce().productName(),
+                categoryId,
+                faker.number().numberBetween(1000, 10000),
+                "R$",
+                true,
+                200
         );
     }
 

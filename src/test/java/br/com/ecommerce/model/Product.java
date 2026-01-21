@@ -1,7 +1,8 @@
 package br.com.ecommerce.model;
 
 public class Product {
-    private Integer sku;
+    private Integer id;
+    private String sku;
     private String name;
     private Integer categoryId;
     private Integer priceCents;
@@ -9,7 +10,17 @@ public class Product {
     private boolean active;
     private Integer stockQuantity;
 
-    public Product(Integer sku, String name, Integer categoryId, Integer priceCents, String currency, boolean active, Integer stockQuantity) {
+    public Product(String sku, String name, Integer categoryId, Integer priceCents, String currency, boolean active, Integer stockQuantity) {
+        this.sku = sku;
+        this.name = name;
+        this.categoryId = categoryId;
+        this.priceCents = priceCents;
+        this.currency = currency;
+        this.active = active;
+        this.stockQuantity = stockQuantity;
+    }
+    public Product(Integer id, String sku, String name, Integer categoryId, Integer priceCents, String currency, boolean active, Integer stockQuantity) {
+        this.id = id;
         this.sku = sku;
         this.name = name;
         this.categoryId = categoryId;
@@ -19,8 +30,19 @@ public class Product {
         this.stockQuantity = stockQuantity;
     }
 
-    public Integer getSku() {
+    public Product(){
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getSku() {
         return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public String getName() {
