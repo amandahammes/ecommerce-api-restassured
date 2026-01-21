@@ -69,4 +69,69 @@ public class ProductTest {
                 .body("priceCents", equalTo(newProduct.getPriceCents()))
                 .body("stockQuantity", equalTo(newProduct.getStockQuantity()));
     }
+    @Test
+    @DisplayName("Deve ter sucesso ao pegar/listar Produto com informações válidas")
+    public void shouldPutProductSuccessfullyWithValidInformation(){
+        Category newCategory = CategoryService.createCategory();
+        String token = CategoryService.getToken();
+        Integer categoryId = newCategory.getId();
+        Product newProduct = ProductService.createProduct(categoryId, token);
+        String newNameProduct = "CHANGE PRODUCT NAME";
+        newProduct.setName(newNameProduct);
+        given()
+                .header("Authorization", token)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(newProduct)
+                .when()
+                .put("/admin/products/{id}", newProduct.getId())
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("sku", notNullValue())
+                .body("sku", equalTo(newProduct.getSku()))
+                .body("name", equalTo(newNameProduct))
+                .body("categoryId", equalTo(categoryId))
+                .body("priceCents", equalTo(newProduct.getPriceCents()))
+                .body("stockQuantity", equalTo(newProduct.getStockQuantity()));
+    }
+
+    @Test
+    @DisplayName("Deve ter sucesso ao deletar Categoria")
+    public void shouldDeleteProductSuccessfullyWithValidInformation() {
+        Category newCategory = CategoryService.createCategory();
+        String token = CategoryService.getToken();
+        Integer categoryId = newCategory.getId();
+        Product newProduct = ProductService.createProduct(categoryId, token);
+        given()
+                .header("Authorization", token)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .delete("/admin/products/{id}", newProduct.getId())
+                .then()
+                .log().all()
+                .statusCode(204);
+    }
+
+    @Test
+    @DisplayName("Deve ter sucesso ao pegar lista de Produtos com informações válidas")
+    public void shouldGetAllProductsSuccessfullyWithValidInformation() {
+        Category category = CategoryService.createCategory();
+        String token = CategoryService.getToken();
+        Product product1 = ProductService.createProduct(category.getId(), token);
+        Product product2 = ProductService.createProduct(category.getId(), token);
+        given()
+                .header("Authorization", token)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/products")
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("size()", greaterThanOrEqualTo(2))
+                .body("content.id", hasItems(product1.getId(), product2.getId()))
+                .body("content.name", hasItems(product1.getName(), product2.getName()));;
+    }
 }
