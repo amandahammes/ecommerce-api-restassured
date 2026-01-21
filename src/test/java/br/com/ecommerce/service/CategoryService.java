@@ -11,10 +11,10 @@ public class CategoryService {
     private static String token;
 
     public static Category createCategory(){
-        Category newCategory = DataFactory.createRandomCategory();
         UserService.createUser();
         UserService.loginUserAdmin();
         token = UserService.loginUserAdmin();
+        Category newCategory = DataFactory.createRandomCategory();
         return given()
                 .header("Authorization", token)
                 .contentType(ContentType.JSON)

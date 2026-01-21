@@ -94,6 +94,7 @@ public class CategoryTest {
                 .log().all()
                 .statusCode(204);
     }
+
     @Test
     @DisplayName("Deve ter sucesso ao pegar Categoria com informações válidas")
     public void shouldGetAllCategoriesSuccessfullyWithValidInformation() {
