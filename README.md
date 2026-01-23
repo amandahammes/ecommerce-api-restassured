@@ -1,6 +1,6 @@
 # Automação de Testes - Ecommerce API
 
-Primeira etapa da automação de testes com REST Assured da Aplicação [E-commerce API](https://github.com/renansalves/E-Commerce-API).
+Primeira etapa da automação de testes com REST Assured da Aplicação [E-commerce API](https://github.com/renansalves/E-Commerce-API). <br>
 O objetivo final é garantir que as operações CRUD de `produto`, `categoria`, `carrinho`, `order` e `usuário` funcionem corretamente.
 
 ## Escopo e Cenários
