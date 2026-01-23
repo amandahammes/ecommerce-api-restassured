@@ -1,5 +1,6 @@
 package br.com.ecommerce.dataFactory;
 
+import br.com.ecommerce.model.Cart;
 import br.com.ecommerce.model.Category;
 import br.com.ecommerce.model.Product;
 import br.com.ecommerce.model.User;
@@ -37,6 +38,13 @@ public class DataFactory {
                 "R$",
                 true,
                 200
+        );
+    }
+
+    public static Cart createCartItem(Integer productId) {
+        return new Cart(
+            productId,
+            faker.number().numberBetween(1, 5)
         );
     }
 

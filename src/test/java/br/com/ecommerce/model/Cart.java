@@ -1,10 +1,10 @@
 package br.com.ecommerce.model;
 
 public class Cart {
-    private String productId;
+    private Integer productId;
     private Integer quantity;
 
-    public Cart(String productId, Integer quantity) {
+    public Cart(Integer productId, Integer quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }
@@ -12,7 +12,7 @@ public class Cart {
     public Cart() {
     }
 
-    public String getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
@@ -20,7 +20,7 @@ public class Cart {
         return quantity;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
