@@ -132,6 +132,6 @@ public class ProductTest {
                 .statusCode(200)
                 .body("size()", greaterThanOrEqualTo(2))
                 .body("content.id", hasItems(product1.getId(), product2.getId()))
-                .body("content.name", hasItems(product1.getName(), product2.getName()));;
+                .body("content.name", hasItems(product1.getName(), product2.getName()));
     }
 }
