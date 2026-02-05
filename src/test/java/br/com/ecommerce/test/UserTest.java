@@ -1,6 +1,6 @@
 package br.com.ecommerce.test;
 
-import br.com.ecommerce.dataFactory.UserDataFactory;
+import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.model.User;
 import br.com.ecommerce.service.UserService;
 import br.com.ecommerce.util.ConfigLoader;
@@ -21,7 +21,7 @@ public class UserTest {
     @Test
     @DisplayName("Deve ter sucesso ao criar Usuário com credenciais válidas")
     public void shouldCreateUserSuccessfullyWithValidCredentials(){
-        User randomUser = UserDataFactory.createRandomUser();
+        User randomUser = DataFactory.createRandomUser();
         given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
