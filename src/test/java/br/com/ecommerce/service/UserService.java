@@ -8,7 +8,7 @@ import static io.restassured.RestAssured.given;
 
 public class UserService {
 
-public static User createUser(){
+public User createUser(){
         User randomUser = DataFactory.createRandomUser();
         given()
                 .contentType(ContentType.JSON)
@@ -21,9 +21,12 @@ public static User createUser(){
         return randomUser;
     }
 
-    public static String loginUserAdmin() {
+    public String loginUserAdmin() {
         User userLogin = createUser();
-        User loginCredentials = new User(userLogin.getEmail(), userLogin.getPassword());
+        User loginCredentials = User.builder()
+                .email(userLogin.getEmail())
+                .password(userLogin.getPassword())
+                .build();
         return given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)

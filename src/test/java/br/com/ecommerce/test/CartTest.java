@@ -17,6 +17,10 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class CartTest {
+
+    private CategoryService categoryService = new CategoryService();
+    private ProductService productService = new ProductService();
+
     @BeforeAll
     public static void setup(){
         RestAssured.baseURI = ConfigLoader.getProperty("base_url");
@@ -25,9 +29,9 @@ public class CartTest {
     @Test
     @DisplayName("Deve ter sucesso ao adicionar item ao carrinho")
     public void shouldAddProductToCartSuccessfully(){
-        Category category = CategoryService.createCategory();
-        String token = CategoryService.getToken();
-        Product product = ProductService.createProduct(category.getId(), token);
+        Category category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        Product product = productService.createProduct(category.getId(), token);
         Cart addCartItem = DataFactory.createCartItem(product.getId());
 
         given()

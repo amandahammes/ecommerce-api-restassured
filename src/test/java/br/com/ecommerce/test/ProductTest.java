@@ -18,6 +18,9 @@ import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.equalTo;
 
 public class ProductTest {
+    private CategoryService categoryService = new CategoryService();
+    private ProductService productService = new ProductService();
+
     @BeforeAll
     public static void setup(){
         RestAssured.baseURI = ConfigLoader.getProperty("base_url");
@@ -26,8 +29,8 @@ public class ProductTest {
     @Test
     @DisplayName("Deve ter sucesso ao criar Produto com informações válidas")
     public void shouldCreateProductSuccessfullyWithValidInformation(){
-        Category newCategory = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category newCategory = categoryService.createCategory();
+        String token = categoryService.getToken();
         Integer categoryId = newCategory.getId();
         Product product = DataFactory.createRandomProduct(categoryId);
         given()
@@ -49,10 +52,10 @@ public class ProductTest {
     @Test
     @DisplayName("Deve ter sucesso ao pegar/listar Produto com informações válidas")
     public void shouldGetProductSuccessfullyWithValidInformation(){
-        Category newCategory = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category newCategory = categoryService.createCategory();
+        String token = categoryService.getToken();
         Integer categoryId = newCategory.getId();
-        Product newProduct = ProductService.createProduct(categoryId, token);
+        Product newProduct = productService.createProduct(categoryId, token);
 
         given()
                 .header("Authorization", token)
@@ -62,7 +65,7 @@ public class ProductTest {
                 .get("/products/{id}", newProduct.getId())
                 .then()
                 .log().all()
-                .statusCode(302)
+                .statusCode(200)
                 .body("sku", notNullValue())
                 .body("sku", equalTo(newProduct.getSku()))
                 .body("categoryId", equalTo(categoryId))
@@ -72,10 +75,10 @@ public class ProductTest {
     @Test
     @DisplayName("Deve ter sucesso ao pegar/listar Produto com informações válidas")
     public void shouldPutProductSuccessfullyWithValidInformation(){
-        Category newCategory = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category newCategory = categoryService.createCategory();
+        String token = categoryService.getToken();
         Integer categoryId = newCategory.getId();
-        Product newProduct = ProductService.createProduct(categoryId, token);
+        Product newProduct = productService.createProduct(categoryId, token);
         String newNameProduct = "CHANGE PRODUCT NAME";
         newProduct.setName(newNameProduct);
         given()
@@ -97,12 +100,12 @@ public class ProductTest {
     }
 
     @Test
-    @DisplayName("Deve ter sucesso ao deletar Categoria")
+    @DisplayName("Deve ter sucesso ao deletar Produto")
     public void shouldDeleteProductSuccessfullyWithValidInformation() {
-        Category newCategory = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category newCategory = categoryService.createCategory();
+        String token = categoryService.getToken();
         Integer categoryId = newCategory.getId();
-        Product newProduct = ProductService.createProduct(categoryId, token);
+        Product newProduct = productService.createProduct(categoryId, token);
         given()
                 .header("Authorization", token)
                 .contentType(ContentType.JSON)
@@ -117,10 +120,10 @@ public class ProductTest {
     @Test
     @DisplayName("Deve ter sucesso ao pegar lista de Produtos com informações válidas")
     public void shouldGetAllProductsSuccessfullyWithValidInformation() {
-        Category category = CategoryService.createCategory();
-        String token = CategoryService.getToken();
-        Product product1 = ProductService.createProduct(category.getId(), token);
-        Product product2 = ProductService.createProduct(category.getId(), token);
+        Category category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        Product product1 = productService.createProduct(category.getId(), token);
+        Product product2 = productService.createProduct(category.getId(), token);
         given()
                 .header("Authorization", token)
                 .contentType(ContentType.JSON)

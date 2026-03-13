@@ -13,6 +13,10 @@ import static org.hamcrest.Matchers.*;
 import static io.restassured.RestAssured.given;
 
 public class CategoryTest {
+
+    private UserService userService = new UserService();
+    private CategoryService categoryService = new CategoryService();
+
     @BeforeAll
     public static void setup(){
         RestAssured.baseURI = ConfigLoader.getProperty("base_url");
@@ -22,9 +26,7 @@ public class CategoryTest {
     @DisplayName("Deve ter sucesso ao criar Categoria com informações válidas")
     public void shouldCreateCategorySuccessfullyWithValidInformation(){
         Category newCategory = DataFactory.createRandomCategory();
-        UserService.createUser();
-        UserService.loginUserAdmin();
-        String token = UserService.loginUserAdmin();
+        String token = userService.loginUserAdmin();
         given()
                 .header("Authorization", token)
                 .contentType(ContentType.JSON)
@@ -43,8 +45,8 @@ public class CategoryTest {
     @Test
     @DisplayName("Deve ter sucesso ao pegar Categoria com informações válidas")
     public void shouldGetCategorySuccessfullyWithValidInformation() {
-        Category category = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category category = categoryService.createCategory();
+        String token = categoryService.getToken();
         given()
                 .header("Authorization", token)
                 .contentType(ContentType.JSON)
@@ -61,8 +63,8 @@ public class CategoryTest {
     @Test
     @DisplayName("Deve ter sucesso ao alterar Categoria com informações válidas")
     public void shouldPutCategorySuccessfullyWithValidInformation() {
-        Category category = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category category = categoryService.createCategory();
+        String token = categoryService.getToken();
         String categoryNewName = "AAAAAAA";
         category.setName(categoryNewName);
         given()
@@ -82,8 +84,8 @@ public class CategoryTest {
     @Test
     @DisplayName("Deve ter sucesso ao deletar Categoria")
     public void shouldDeleteCategorySuccessfullyWithValidInformation() {
-        Category category = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category category = categoryService.createCategory();
+        String token = categoryService.getToken();
         given()
                 .header("Authorization", token)
                 .contentType(ContentType.JSON)
@@ -98,9 +100,9 @@ public class CategoryTest {
     @Test
     @DisplayName("Deve ter sucesso ao pegar Categoria com informações válidas")
     public void shouldGetAllCategoriesSuccessfullyWithValidInformation() {
-        Category category1 = CategoryService.createCategory();
-        Category category2 = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category category1 = categoryService.createCategory();
+        Category category2 = categoryService.createCategory();
+        String token = categoryService.getToken();
         given()
                 .header("Authorization", token)
                 .contentType(ContentType.JSON)

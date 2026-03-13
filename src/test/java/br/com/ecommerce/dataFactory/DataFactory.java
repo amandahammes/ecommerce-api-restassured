@@ -4,71 +4,44 @@ import br.com.ecommerce.model.Cart;
 import br.com.ecommerce.model.Category;
 import br.com.ecommerce.model.Product;
 import br.com.ecommerce.model.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
-import java.io.File;
-import java.io.IOException;
 
 public class DataFactory {
 
     private static final Faker faker = new Faker();
 
     public static User createRandomUser() {
-        return new User(
-                faker.internet().emailAddress(),
-                faker.internet().password(8,15,true,true),
-                "ADMIN"
-        );
+        return User.builder()
+                .email(faker.internet().emailAddress())
+                .password(faker.internet().password(8,15,true,true))
+                .role("ADMIN")
+                .build();
     }
 
     public static Category createRandomCategory() {
-        return new Category(
-                faker.commerce().department(),
-                faker.lorem().sentence(5)
-        );
+        return Category.builder()
+                .name(faker.commerce().department())
+                .description(faker.lorem().sentence(5))
+                .build();
     }
 
     public static Product createRandomProduct(Integer categoryId) {
-        return new Product(
-                faker.number().digits(5),
-                faker.commerce().productName(),
-                categoryId,
-                faker.number().numberBetween(1000, 10000),
-                "R$",
-                true,
-                200
-        );
+        return Product.builder()
+                .sku(faker.number().digits(5))
+                .name(faker.commerce().productName())
+                .categoryId(categoryId)
+                .priceCents(faker.number().numberBetween(1000, 10000))
+                .currency("R$")
+                .active(true)
+                .stockQuantity(200)
+                .build();
     }
 
     public static Cart createCartItem(Integer productId) {
-        return new Cart(
-            productId,
-            faker.number().numberBetween(1, 5)
-        );
-    }
-
-    public static Category loadCategoryData(){
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(
-                    new File("src/test/resources/category.json"),
-                    Category.class
-            );
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading login JSON file.", e);
-        }
-    }
-
-    public static User loadUserData(){
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(
-                    new File("src/test/resources/user.json"),
-                    User.class
-            );
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading login JSON file.", e);
-        }
+        return Cart.builder()
+            .productId(productId)
+            .quantity(faker.number().numberBetween(1, 5))
+            .build();
     }
 }

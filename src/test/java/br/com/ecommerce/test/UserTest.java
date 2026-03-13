@@ -13,6 +13,7 @@ import static io.restassured.RestAssured.*;
 
 public class UserTest {
 
+    private UserService userService = new UserService();
     @BeforeAll
     public static void setup(){
         RestAssured.baseURI = ConfigLoader.getProperty("base_url");
@@ -36,8 +37,11 @@ public class UserTest {
     @Test
     @DisplayName("Deve ter sucesso ao realizar login do Usuário com credenciais válidas")
     public void shouldLoginUserSuccessfullyWithValidCredentials(){
-        User userLogin = UserService.createUser();
-        User loginCredentials = new User(userLogin.getEmail(), userLogin.getPassword());
+        User userLogin = userService.createUser();
+        User loginCredentials = User.builder()
+                .email(userLogin.getEmail())
+                .password(userLogin.getPassword())
+                .build();
         given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
