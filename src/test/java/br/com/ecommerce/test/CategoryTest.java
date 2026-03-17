@@ -8,6 +8,7 @@ import br.com.ecommerce.util.ConfigLoader;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
+
 import static org.hamcrest.Matchers.*;
 
 import static io.restassured.RestAssured.given;
@@ -16,6 +17,7 @@ public class CategoryTest {
 
     private UserService userService = new UserService();
     private CategoryService categoryService = new CategoryService();
+    private DataFactory dataFactory = new DataFactory();
 
     @BeforeAll
     public static void setup(){
@@ -28,7 +30,7 @@ public class CategoryTest {
         Category newCategory = DataFactory.createRandomCategory();
         String token = userService.loginUserAdmin();
         given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(newCategory)
@@ -48,7 +50,7 @@ public class CategoryTest {
         Category category = categoryService.createCategory();
         String token = categoryService.getToken();
         given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
@@ -65,10 +67,10 @@ public class CategoryTest {
     public void shouldPutCategorySuccessfullyWithValidInformation() {
         Category category = categoryService.createCategory();
         String token = categoryService.getToken();
-        String categoryNewName = "AAAAAAA";
-        category.setName(categoryNewName);
+        String categoryName = dataFactory.createRandomCategoryName();
+        category.setName(categoryName);
         given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(category)
@@ -78,7 +80,7 @@ public class CategoryTest {
                 .log().ifValidationFails()
                 .statusCode(200)
                 .body("id", equalTo(category.getId()))
-                .body("name", equalTo(categoryNewName));
+                .body("name", equalTo(categoryName));
     }
 
     @Test
@@ -87,7 +89,7 @@ public class CategoryTest {
         Category category = categoryService.createCategory();
         String token = categoryService.getToken();
         given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
@@ -104,7 +106,7 @@ public class CategoryTest {
         Category category2 = categoryService.createCategory();
         String token = categoryService.getToken();
         given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()

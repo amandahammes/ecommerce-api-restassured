@@ -35,7 +35,7 @@ public class CartTest {
         Cart addCartItem = DataFactory.createCartItem(product.getId());
 
         given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(addCartItem)

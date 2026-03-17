@@ -82,7 +82,7 @@ public class ProductTest {
         String newNameProduct = "CHANGE PRODUCT NAME";
         newProduct.setName(newNameProduct);
         given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(newProduct)
@@ -107,7 +107,7 @@ public class ProductTest {
         Integer categoryId = newCategory.getId();
         Product newProduct = productService.createProduct(categoryId, token);
         given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
@@ -125,7 +125,7 @@ public class ProductTest {
         Product product1 = productService.createProduct(category.getId(), token);
         Product product2 = productService.createProduct(category.getId(), token);
         given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()

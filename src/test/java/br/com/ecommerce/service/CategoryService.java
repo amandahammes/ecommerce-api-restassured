@@ -18,7 +18,7 @@ public class CategoryService {
         token = userService.loginUserAdmin();
         Category newCategory = dataFactory.createRandomCategory();
         return given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(newCategory)

@@ -17,20 +17,21 @@ public User createUser(){
                 .when()
                 .post("/users/register")
                 .then()
+                .log().ifValidationFails()
                 .statusCode(201);
         return randomUser;
     }
 
     public String loginUserAdmin() {
         User userLogin = createUser();
-        User loginCredentials = User.builder()
-                .email(userLogin.getEmail())
-                .password(userLogin.getPassword())
-                .build();
+//        User loginCredentials = User.builder()
+//                .email(userLogin.getEmail())
+//                .password(userLogin.getPassword())
+//                .build();
         return given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .body(loginCredentials)
+                .body(userLogin)
                 .when()
                 .post("/users/login")
                 .then()

@@ -11,7 +11,7 @@ public class ProductService {
         Product newProduct = DataFactory.createRandomProduct(categoryId);
 
         return given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(newProduct)

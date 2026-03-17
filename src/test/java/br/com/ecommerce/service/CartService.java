@@ -10,7 +10,7 @@ public class CartService {
     public Cart addItemToCart(String token, Integer productId) {
         Cart addCartItem = DataFactory.createCartItem(productId);
         return given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(addCartItem)

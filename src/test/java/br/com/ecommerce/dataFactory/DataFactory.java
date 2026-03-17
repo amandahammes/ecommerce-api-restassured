@@ -27,6 +27,10 @@ public class DataFactory {
                 .build();
     }
 
+    public static String createRandomCategoryName() {
+        return faker.commerce().department();
+    }
+
     public static Product createRandomProduct(Integer categoryId) {
         return Product.builder()
                 .sku(faker.number().digits(5))
