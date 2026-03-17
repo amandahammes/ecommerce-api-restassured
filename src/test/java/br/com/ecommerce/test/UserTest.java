@@ -30,7 +30,7 @@ public class UserTest {
                 .when()
                 .post("/users/register")
                 .then()
-                .log().all()
+                .log().ifValidationFails()
                 .statusCode(201);
     }
 
@@ -49,6 +49,7 @@ public class UserTest {
                 .when()
                 .post("/users/login")
                 .then()
+                .log().ifValidationFails()
                 .statusCode(200)
                 .body("token", notNullValue());
     }

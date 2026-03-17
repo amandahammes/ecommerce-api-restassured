@@ -42,7 +42,7 @@ public class CartTest {
                 .when()
                 .post("/cart/items")
                 .then()
-                .log().all()
+                .log().ifValidationFails()
                 .statusCode(201)
                 .body("items[0].productId", equalTo(product.getId()))
                 .body("items[0].productName", equalTo(product.getName()))

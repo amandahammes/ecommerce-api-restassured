@@ -13,6 +13,7 @@ public class DataFactory {
 
     public static User createRandomUser() {
         return User.builder()
+                .name(faker.name().firstName())
                 .email(faker.internet().emailAddress())
                 .password(faker.internet().password(8,15,true,true))
                 .role("ADMIN")

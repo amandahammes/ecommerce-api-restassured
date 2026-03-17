@@ -35,7 +35,7 @@ public class CategoryTest {
                 .when()
                 .post("/categories/admin")
                 .then()
-                .log().all()
+                .log().ifValidationFails()
                 .statusCode(201)
                 .body("id", notNullValue())
                 .body("id", instanceOf(Integer.class))
@@ -54,7 +54,7 @@ public class CategoryTest {
                 .when()
                 .get("/categories/{id}", category.getId())
                 .then()
-                .log().all()
+                .log().ifValidationFails()
                 .statusCode(200)
                 .body("id", equalTo(category.getId()))
                 .body("name", equalTo(category.getName()))
@@ -75,7 +75,7 @@ public class CategoryTest {
                 .when()
                 .put("/categories/admin/{id}", category.getId())
                 .then()
-                .log().all()
+                .log().ifValidationFails()
                 .statusCode(200)
                 .body("id", equalTo(category.getId()))
                 .body("name", equalTo(categoryNewName));
@@ -93,7 +93,7 @@ public class CategoryTest {
                 .when()
                 .delete("/categories/admin/{id}", category.getId())
                 .then()
-                .log().all()
+                .log().ifValidationFails()
                 .statusCode(204);
     }
 
@@ -110,7 +110,7 @@ public class CategoryTest {
                 .when()
                 .get("/categories")
                 .then()
-                .log().all()
+                .log().ifValidationFails()
                 .statusCode(200)
                 .body("size()", greaterThanOrEqualTo(2))
                 .body("content.id", hasItems(category1.getId(), category2.getId()))
