@@ -3,20 +3,22 @@ package br.com.ecommerce.service;
 import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.model.Category;
 import io.restassured.http.ContentType;
+import lombok.Getter;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class CategoryService {
-    private static String token;
+    private UserService userService = new UserService();
+    private DataFactory dataFactory = new DataFactory();
+    @Getter
+    private String token;
 
-    public static Category createCategory(){
-        UserService.createUser();
-        UserService.loginUserAdmin();
-        token = UserService.loginUserAdmin();
-        Category newCategory = DataFactory.createRandomCategory();
+    public Category createCategory(){
+        token = userService.loginUserAdmin();
+        Category newCategory = dataFactory.createRandomCategory();
         return given()
-                .header("Authorization", token)
+                .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(newCategory)
@@ -28,9 +30,5 @@ public class CategoryService {
                 .body("id", instanceOf(Integer.class))
                 .extract()
                 .as(Category.class);
-    }
-
-    public static String getToken() {
-        return token;
     }
 }

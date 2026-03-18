@@ -5,11 +5,7 @@ import br.com.ecommerce.model.Category;
 import br.com.ecommerce.model.Product;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
-import br.com.ecommerce.service.UserService;
-import br.com.ecommerce.util.ConfigLoader;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeAll;
+import br.com.ecommerce.test.base.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,29 +13,27 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.equalTo;
 
-public class ProductTest {
-    @BeforeAll
-    public static void setup(){
-        RestAssured.baseURI = ConfigLoader.getProperty("base_url");
-    }
+public class ProductTest extends BaseTest {
+
+    private CategoryService categoryService = new CategoryService();
+    private ProductService productService = new ProductService();
+    private DataFactory dataFactory = new DataFactory();
 
     @Test
     @DisplayName("Deve ter sucesso ao criar Produto com informações válidas")
     public void shouldCreateProductSuccessfullyWithValidInformation(){
-        Category newCategory = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category newCategory = categoryService.createCategory();
+        String token = categoryService.getToken();
         Integer categoryId = newCategory.getId();
         Product product = DataFactory.createRandomProduct(categoryId);
         given()
-                .header("Authorization", token)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(requestSpec(token))
                 .body(product)
                 .when()
                 .post("/admin/products")
                 .then()
-                .log().all()
-                .statusCode(201)
+                .log().ifValidationFails()
+                .spec(responseSpecCode201CreatedContent())
                 .body("sku", notNullValue())
                 .body("categoryId", equalTo(categoryId))
                 .body("priceCents", equalTo(product.getPriceCents()))
@@ -49,20 +43,18 @@ public class ProductTest {
     @Test
     @DisplayName("Deve ter sucesso ao pegar/listar Produto com informações válidas")
     public void shouldGetProductSuccessfullyWithValidInformation(){
-        Category newCategory = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category newCategory = categoryService.createCategory();
+        String token = categoryService.getToken();
         Integer categoryId = newCategory.getId();
-        Product newProduct = ProductService.createProduct(categoryId, token);
+        Product newProduct = productService.createProduct(categoryId, token);
 
         given()
-                .header("Authorization", token)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(requestSpec(token))
                 .when()
                 .get("/products/{id}", newProduct.getId())
                 .then()
-                .log().all()
-                .statusCode(302)
+                .log().ifValidationFails()
+                .spec(responseSpecCode200())
                 .body("sku", notNullValue())
                 .body("sku", equalTo(newProduct.getSku()))
                 .body("categoryId", equalTo(categoryId))
@@ -70,25 +62,22 @@ public class ProductTest {
                 .body("stockQuantity", equalTo(newProduct.getStockQuantity()));
     }
     @Test
-    @DisplayName("Deve ter sucesso ao pegar/listar Produto com informações válidas")
+    @DisplayName("Deve ter sucesso ao alterar Produto com informações válidas")
     public void shouldPutProductSuccessfullyWithValidInformation(){
-        Category newCategory = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category newCategory = categoryService.createCategory();
+        String token = categoryService.getToken();
         Integer categoryId = newCategory.getId();
-        Product newProduct = ProductService.createProduct(categoryId, token);
-        String newNameProduct = "CHANGE PRODUCT NAME";
+        Product newProduct = productService.createProduct(categoryId, token);
+        String newNameProduct = dataFactory.createRandomProductName();
         newProduct.setName(newNameProduct);
         given()
-                .header("Authorization", token)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(requestSpec(token))
                 .body(newProduct)
                 .when()
                 .put("/admin/products/{id}", newProduct.getId())
                 .then()
-                .log().all()
-                .statusCode(200)
-                .body("sku", notNullValue())
+                .log().ifValidationFails()
+                .spec(responseSpecCode200())
                 .body("sku", equalTo(newProduct.getSku()))
                 .body("name", equalTo(newNameProduct))
                 .body("categoryId", equalTo(categoryId))
@@ -97,39 +86,35 @@ public class ProductTest {
     }
 
     @Test
-    @DisplayName("Deve ter sucesso ao deletar Categoria")
+    @DisplayName("Deve ter sucesso ao deletar Produto")
     public void shouldDeleteProductSuccessfullyWithValidInformation() {
-        Category newCategory = CategoryService.createCategory();
-        String token = CategoryService.getToken();
+        Category newCategory = categoryService.createCategory();
+        String token = categoryService.getToken();
         Integer categoryId = newCategory.getId();
-        Product newProduct = ProductService.createProduct(categoryId, token);
+        Product newProduct = productService.createProduct(categoryId, token);
         given()
-                .header("Authorization", token)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(requestSpec(token))
                 .when()
                 .delete("/admin/products/{id}", newProduct.getId())
                 .then()
-                .log().all()
-                .statusCode(204);
+                .log().ifValidationFails()
+                .spec(responseSpecCode204());
     }
 
     @Test
     @DisplayName("Deve ter sucesso ao pegar lista de Produtos com informações válidas")
     public void shouldGetAllProductsSuccessfullyWithValidInformation() {
-        Category category = CategoryService.createCategory();
-        String token = CategoryService.getToken();
-        Product product1 = ProductService.createProduct(category.getId(), token);
-        Product product2 = ProductService.createProduct(category.getId(), token);
+        Category category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        Product product1 = productService.createProduct(category.getId(), token);
+        Product product2 = productService.createProduct(category.getId(), token);
         given()
-                .header("Authorization", token)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(requestSpec(token))
                 .when()
                 .get("/products")
                 .then()
-                .log().all()
-                .statusCode(200)
+                .log().ifValidationFails()
+                .spec(responseSpecCode200())
                 .body("size()", greaterThanOrEqualTo(2))
                 .body("content.id", hasItems(product1.getId(), product2.getId()))
                 .body("content.name", hasItems(product1.getName(), product2.getName()));
