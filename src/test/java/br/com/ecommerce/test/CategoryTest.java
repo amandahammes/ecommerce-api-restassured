@@ -4,25 +4,18 @@ import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.model.Category;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.UserService;
-import br.com.ecommerce.util.ConfigLoader;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
+import br.com.ecommerce.test.base.BaseTest;
 import org.junit.jupiter.api.*;
 
 import static org.hamcrest.Matchers.*;
 
 import static io.restassured.RestAssured.given;
 
-public class CategoryTest {
+public class CategoryTest extends BaseTest {
 
     private UserService userService = new UserService();
     private CategoryService categoryService = new CategoryService();
     private DataFactory dataFactory = new DataFactory();
-
-    @BeforeAll
-    public static void setup(){
-        RestAssured.baseURI = ConfigLoader.getProperty("base_url");
-    }
 
     @Test
     @DisplayName("Deve ter sucesso ao criar Categoria com informações válidas")
@@ -30,9 +23,7 @@ public class CategoryTest {
         Category newCategory = DataFactory.createRandomCategory();
         String token = userService.loginUserAdmin();
         given()
-                .header("Authorization", "Bearer " + token)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(requestSpec(token))
                 .body(newCategory)
                 .when()
                 .post("/categories/admin")
@@ -50,9 +41,7 @@ public class CategoryTest {
         Category category = categoryService.createCategory();
         String token = categoryService.getToken();
         given()
-                .header("Authorization", "Bearer " + token)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(requestSpec(token))
                 .when()
                 .get("/categories/{id}", category.getId())
                 .then()
@@ -70,9 +59,7 @@ public class CategoryTest {
         String categoryName = dataFactory.createRandomCategoryName();
         category.setName(categoryName);
         given()
-                .header("Authorization", "Bearer " + token)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(requestSpec(token))
                 .body(category)
                 .when()
                 .put("/categories/admin/{id}", category.getId())
@@ -89,9 +76,7 @@ public class CategoryTest {
         Category category = categoryService.createCategory();
         String token = categoryService.getToken();
         given()
-                .header("Authorization", "Bearer " + token)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(requestSpec(token))
                 .when()
                 .delete("/categories/admin/{id}", category.getId())
                 .then()
@@ -106,9 +91,7 @@ public class CategoryTest {
         Category category2 = categoryService.createCategory();
         String token = categoryService.getToken();
         given()
-                .header("Authorization", "Bearer " + token)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(requestSpec(token))
                 .when()
                 .get("/categories")
                 .then()

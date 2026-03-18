@@ -27,8 +27,8 @@ public class DataFactory {
                 .build();
     }
 
-    public static String createRandomCategoryName() {
-        return faker.commerce().department();
+    public static String createRandomProductName() {
+        return faker.commerce().productName();
     }
 
     public static Product createRandomProduct(Integer categoryId) {
@@ -41,6 +41,10 @@ public class DataFactory {
                 .active(true)
                 .stockQuantity(200)
                 .build();
+    }
+
+    public static String createRandomCategoryName() {
+        return faker.commerce().department();
     }
 
     public static Cart createCartItem(Integer productId) {

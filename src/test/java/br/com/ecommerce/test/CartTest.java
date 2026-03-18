@@ -6,25 +6,17 @@ import br.com.ecommerce.model.Category;
 import br.com.ecommerce.model.Product;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
-import br.com.ecommerce.util.ConfigLoader;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeAll;
+import br.com.ecommerce.test.base.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-public class CartTest {
+public class CartTest extends BaseTest {
 
     private CategoryService categoryService = new CategoryService();
     private ProductService productService = new ProductService();
-
-    @BeforeAll
-    public static void setup(){
-        RestAssured.baseURI = ConfigLoader.getProperty("base_url");
-    }
 
     @Test
     @DisplayName("Deve ter sucesso ao adicionar item ao carrinho")
@@ -35,9 +27,7 @@ public class CartTest {
         Cart addCartItem = DataFactory.createCartItem(product.getId());
 
         given()
-                .header("Authorization", "Bearer " + token)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(requestSpec(token))
                 .body(addCartItem)
                 .when()
                 .post("/cart/items")

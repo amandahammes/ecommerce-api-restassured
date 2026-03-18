@@ -3,35 +3,27 @@ package br.com.ecommerce.test;
 import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.model.User;
 import br.com.ecommerce.service.UserService;
-import br.com.ecommerce.util.ConfigLoader;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
+import br.com.ecommerce.test.base.BaseTest;
 import static org.hamcrest.Matchers.*;
 import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.*;
 
-public class UserTest {
+public class UserTest extends BaseTest {
 
     private UserService userService = new UserService();
-    @BeforeAll
-    public static void setup(){
-        RestAssured.baseURI = ConfigLoader.getProperty("base_url");
-    }
 
     @Test
     @DisplayName("Deve ter sucesso ao criar Usuário com credenciais válidas")
     public void shouldCreateUserSuccessfullyWithValidCredentials(){
         User randomUser = DataFactory.createRandomUser();
         given()
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(publicSpec())
                 .body(randomUser)
                 .when()
                 .post("/users/register")
                 .then()
-                .log().ifValidationFails()
-                .statusCode(201);
+                .spec(responseSpecCode201Created());
     }
 
     @Test
@@ -43,14 +35,12 @@ public class UserTest {
                 .password(userLogin.getPassword())
                 .build();
         given()
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
+                .spec(publicSpec())
                 .body(loginCredentials)
                 .when()
                 .post("/users/login")
                 .then()
-                .log().ifValidationFails()
-                .statusCode(200)
+                .spec(responseSpecCode200())
                 .body("token", notNullValue());
     }
 }
