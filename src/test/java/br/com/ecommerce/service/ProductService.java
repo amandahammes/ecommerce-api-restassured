@@ -18,7 +18,6 @@ public class ProductService {
                 .when()
                 .post("/admin/products")
                 .then()
-                .log().all()
                 .statusCode(201)
                 .extract()
                 .as(Product.class);

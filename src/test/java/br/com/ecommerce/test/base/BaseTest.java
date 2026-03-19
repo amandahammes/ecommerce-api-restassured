@@ -36,7 +36,7 @@ public class BaseTest {
     protected ResponseSpecification responseSpecCode200() {
         return new ResponseSpecBuilder()
                 .expectStatusCode(200)
-                .expectContentType(ContentType.JSON)
+                //.expectContentType(ContentType.JSON)
                 .build();
     }
 

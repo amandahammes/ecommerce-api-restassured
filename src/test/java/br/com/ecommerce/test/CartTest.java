@@ -1,9 +1,10 @@
 package br.com.ecommerce.test;
 
 import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.model.Cart;
+import br.com.ecommerce.model.CartRequest;
 import br.com.ecommerce.model.Category;
 import br.com.ecommerce.model.Product;
+import br.com.ecommerce.service.CartService;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
 import br.com.ecommerce.test.base.BaseTest;
@@ -17,6 +18,7 @@ public class CartTest extends BaseTest {
 
     private CategoryService categoryService = new CategoryService();
     private ProductService productService = new ProductService();
+    private CartService cartService = new CartService();
 
     @Test
     @DisplayName("Deve ter sucesso ao adicionar item ao carrinho")
@@ -24,7 +26,7 @@ public class CartTest extends BaseTest {
         Category category = categoryService.createCategory();
         String token = categoryService.getToken();
         Product product = productService.createProduct(category.getId(), token);
-        Cart addCartItem = DataFactory.createCartItem(product.getId());
+        CartRequest addCartItem = DataFactory.createCartItem(product.getId());
 
         given()
                 .spec(requestSpec(token))
@@ -33,10 +35,33 @@ public class CartTest extends BaseTest {
                 .post("/cart/items")
                 .then()
                 .log().ifValidationFails()
-                .statusCode(201)
+                .spec(responseSpecCode201Created())
                 .body("items[0].productId", equalTo(product.getId()))
                 .body("items[0].productName", equalTo(product.getName()))
                 .body("items[0].quantity", equalTo(addCartItem.getQuantity()))
                 .body("totalCents", equalTo(addCartItem.getQuantity() * product.getPriceCents()));
+    }
+
+    @Test
+    @DisplayName("Deve ter sucesso ao pegar informações do carrinho")
+    public void shouldGetCartSuccessfully(){
+        Category category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        Product product1 = productService.createProduct(category.getId(), token);
+        Product product2 = productService.createProduct(category.getId(), token);
+        CartRequest addCartItem1 = cartService.addItemToCart(product2.getId(), token);
+        CartRequest addCartItem2 = cartService.addItemToCart(product1.getId(), token);
+
+        given()
+                .spec(requestSpec(token))
+                .log().all()
+                .when()
+                .get("/cart")
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode200())
+                .body("items.productId", hasItems(product1.getId(), product2.getId()))
+                .body("items.quantity", hasItems(addCartItem2.getQuantity(), addCartItem1.getQuantity()))
+                .body("items.size()", is(2));
     }
 }

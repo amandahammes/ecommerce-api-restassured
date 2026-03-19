@@ -24,10 +24,6 @@ public User createUser(){
 
     public String loginUserAdmin() {
         User userLogin = createUser();
-//        User loginCredentials = User.builder()
-//                .email(userLogin.getEmail())
-//                .password(userLogin.getPassword())
-//                .build();
         return given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
