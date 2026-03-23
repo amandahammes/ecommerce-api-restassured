@@ -32,7 +32,9 @@ O objetivo final é garantir que as operações CRUD de `produto`, `categoria`, 
 | CT-011 |    PRODUCTS    |   Positivo    | Listar todos os produtos.                           | GET    | /products                 | 200    | Json com produtos existentes.     |
 | CT-012 |    PRODUCTS    |   Positivo    | Listar produto por {id}                             | GET    | /products/{id}            | 200    | Eco dos dados referente ao id.    |
 | CT-017 |      CART      |   Positivo    | Adiciona produto ao carrinho.                       | POST   | /cart/items               | 201    | Json com produtos do carrinho.    |
-
+| CT-018 |      CART      |   Positivo    | Busca carrinho do usuário.                          | GET    | /cart                     | 200    | Json com produtos e quantidades.    |
+| CT-019 |      CART      |   Positivo    | Deleta carrinho.                                    | DELETE | /cart                     | 204    | -                                   |
+| CT-020 |      CART      |   Positivo    | Deleta item do carrinho.                            | DELETE | /cart/items/{id}          | 204    | -                                   |
 
 ### Cenários de testes a serem desenvolvidos nas próximas etapas:
 
@@ -42,9 +44,6 @@ O objetivo final é garantir que as operações CRUD de `produto`, `categoria`, 
 | CT-014 |     ORDERS     |   Positivo    | Atualizar status do pedido.                         | PATCH  | /orders/admin/{id}/status | 200    | Eco dos dados referente ao pedido.  |
 | CT-015 |     ORDERS     |   Positivo    | Listar pedidos do usuario.                          | GET    | /orders                   | 200    | Eco dos dados referente aos pedidos.|
 | CT-016 |     ORDERS     |   Positivo    | Consultar pedido por {id}.                          | GET    | /orders/{id}              | 200    | Eco dos dados referente ao pedido.  |
-| CT-018 |      CART      |   Positivo    | Busca carrinho do usuário.                          | GET    | /cart                     | 200    | Json com produtos e quantidades.    |
-| CT-019 |      CART      |   Positivo    | Deleta carrinho.                                    | DELETE | /cart                     | 204    | -                                   |
-| CT-020 |      CART      |   Positivo    | Deleta item do carrinho.                            | DELETE | /cart/items/{id}          | 204    | -                                   |
 | CT-101 |      USER      |   Negativo    | Realizar cadastro com e-mail já existente.          | POST   | /users/login              | 403    | Msg: Este e-mail já está cadastrado.|
 | CT-102 |   CATEGORIES   |   Negativo    | Realizar cadastro com senha inválida.               | POST   | /users/login              | 400    | Msg: size must be between 8 and 147483647. |
 | CT-103 |   CATEGORIES   |   Negativo    | Criar categoria já existente.                       | POST   | /categories/admin         | 403    | Msg: Já existe uma categoria com este nome.      |

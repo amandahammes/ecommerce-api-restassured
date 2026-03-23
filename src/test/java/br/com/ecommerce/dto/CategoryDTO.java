@@ -1,4 +1,4 @@
-package br.com.ecommerce.model;
+package br.com.ecommerce.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +9,8 @@ import lombok.Builder;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class CategoryDTO {
     private String name;
-    private String email;
-    private String password;
-    private String role;
+    private String description;
+    private Long id;
 }

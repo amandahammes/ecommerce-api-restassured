@@ -1,4 +1,4 @@
-package br.com.ecommerce.model;
+package br.com.ecommerce.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,9 @@ import lombok.Builder;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cart {
-    private Integer productId;
-    private Integer quantity;
+public class UserDTO {
+    private String name;
+    private String email;
+    private String password;
+    private String role;
 }

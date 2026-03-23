@@ -1,9 +1,11 @@
 package br.com.ecommerce.test;
 
 import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.model.Cart;
-import br.com.ecommerce.model.Category;
-import br.com.ecommerce.model.Product;
+import br.com.ecommerce.dto.request.CartRequest;
+import br.com.ecommerce.dto.CategoryDTO;
+import br.com.ecommerce.dto.ProductDTO;
+import br.com.ecommerce.dto.response.CartResponse;
+import br.com.ecommerce.service.CartService;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
 import br.com.ecommerce.test.base.BaseTest;
@@ -17,14 +19,15 @@ public class CartTest extends BaseTest {
 
     private CategoryService categoryService = new CategoryService();
     private ProductService productService = new ProductService();
+    private CartService cartService = new CartService();
 
     @Test
     @DisplayName("Deve ter sucesso ao adicionar item ao carrinho")
     public void shouldAddProductToCartSuccessfully(){
-        Category category = categoryService.createCategory();
+        CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
-        Product product = productService.createProduct(category.getId(), token);
-        Cart addCartItem = DataFactory.createCartItem(product.getId());
+        ProductDTO product = productService.createProduct(category.getId(), token);
+        CartRequest addCartItem = DataFactory.createCartItem(product.getId());
 
         given()
                 .spec(requestSpec(token))
@@ -33,10 +36,67 @@ public class CartTest extends BaseTest {
                 .post("/cart/items")
                 .then()
                 .log().ifValidationFails()
-                .statusCode(201)
-                .body("items[0].productId", equalTo(product.getId()))
+                .spec(responseSpecCode201Created())
+                .body("items[0].productId", equalTo(product.getId().intValue()))
                 .body("items[0].productName", equalTo(product.getName()))
                 .body("items[0].quantity", equalTo(addCartItem.getQuantity()))
-                .body("totalCents", equalTo(addCartItem.getQuantity() * product.getPriceCents()));
+                .body("totalCents", equalTo(addCartItem.getQuantity() * product.getPriceCents().intValue()));
+    }
+
+    @Test
+    @DisplayName("Deve ter sucesso ao pegar informações do carrinho")
+    public void shouldGetCartSuccessfully(){
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product1 = productService.createProduct(category.getId(), token);
+        ProductDTO product2 = productService.createProduct(category.getId(), token);
+        CartResponse addCartItem1 = cartService.addItemToCart(product2.getId(), token);
+        CartResponse addCartItem2 = cartService.addItemToCart(product1.getId(), token);
+
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .get("/cart")
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode200())
+                .body("items.productId", hasItems(product1.getId().intValue(), product2.getId().intValue()))
+                .body("items.size()", is(2));
+    }
+
+    @Test
+    @DisplayName("Deve ter sucesso ao deletar carrinho")
+    public void shouldDeleteCartSuccessfully(){
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product = productService.createProduct(category.getId(), token);
+        CartResponse addCartItem = cartService.addItemToCart(product.getId(), token);
+
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .delete("/cart")
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode204());
+    }
+
+    @Test
+    @DisplayName("Deve ter sucesso ao deletar item do carrinho")
+    public void shouldDeleteItemCartSuccessfully(){
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product1 = productService.createProduct(category.getId(), token);
+        ProductDTO product2 = productService.createProduct(category.getId(), token);
+        CartResponse addCartItem1 = cartService.addItemToCart(product2.getId(), token);
+        CartResponse addCartItem2 = cartService.addItemToCart(product1.getId(), token);
+
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .delete("/cart/items/{productId}",product1.getId().intValue())
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode204());
     }
 }

@@ -1,15 +1,15 @@
 package br.com.ecommerce.service;
 
 import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.model.User;
+import br.com.ecommerce.dto.UserDTO;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.given;
 
 public class UserService {
 
-public User createUser(){
-        User randomUser = DataFactory.createRandomUser();
+public UserDTO createUser(){
+        UserDTO randomUser = DataFactory.createRandomUser();
         given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
@@ -23,11 +23,7 @@ public User createUser(){
     }
 
     public String loginUserAdmin() {
-        User userLogin = createUser();
-//        User loginCredentials = User.builder()
-//                .email(userLogin.getEmail())
-//                .password(userLogin.getPassword())
-//                .build();
+        UserDTO userLogin = createUser();
         return given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)

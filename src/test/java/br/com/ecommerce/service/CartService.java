@@ -1,14 +1,15 @@
 package br.com.ecommerce.service;
 
 import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.model.Cart;
+import br.com.ecommerce.dto.request.CartRequest;
+import br.com.ecommerce.dto.response.CartResponse;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.given;
 
 public class CartService {
-    public Cart addItemToCart(String token, Integer productId) {
-        Cart addCartItem = DataFactory.createCartItem(productId);
+    public CartResponse addItemToCart(Long productId, String token) {
+        CartRequest addCartItem = DataFactory.createCartItem(productId);
         return given()
                 .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
@@ -17,9 +18,8 @@ public class CartService {
                 .when()
                 .post("/cart/items")
                 .then()
-                .log().all()
                 .statusCode(201)
                 .extract()
-                .as(Cart.class);
+                .as(CartResponse.class);
     }
 }
