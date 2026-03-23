@@ -22,7 +22,7 @@ public class DataFactory {
 
     public static CategoryDTO createRandomCategory() {
         return CategoryDTO.builder()
-                .name(faker.commerce().department())
+                .name(faker.commerce().department()+ " " + faker.number().digits(4))
                 .description(faker.lorem().sentence(5))
                 .build();
     }
@@ -31,12 +31,12 @@ public class DataFactory {
         return faker.commerce().productName();
     }
 
-    public static ProductDTO createRandomProduct(Integer categoryId) {
+    public static ProductDTO createRandomProduct(Long categoryId) {
         return ProductDTO.builder()
                 .sku(faker.number().digits(5))
                 .name(faker.commerce().productName())
                 .categoryId(categoryId)
-                .priceCents(faker.number().numberBetween(1000, 10000))
+                .priceCents(faker.number().numberBetween(100L, 10000L))
                 .currency("R$")
                 .active(true)
                 .stockQuantity(200)
@@ -47,7 +47,7 @@ public class DataFactory {
         return faker.commerce().department();
     }
 
-    public static CartRequest createCartItem(Integer productId) {
+    public static CartRequest createCartItem(Long productId) {
         return CartRequest.builder()
             .productId(productId)
             .quantity(faker.number().numberBetween(1, 2))

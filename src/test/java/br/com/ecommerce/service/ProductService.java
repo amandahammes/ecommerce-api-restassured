@@ -7,7 +7,7 @@ import static io.restassured.RestAssured.given;
 
 public class ProductService {
 
-    public ProductDTO createProduct(Integer categoryId, String token){
+    public ProductDTO createProduct(Long categoryId, String token){
         ProductDTO newProduct = DataFactory.createRandomProduct(categoryId);
 
         return given()

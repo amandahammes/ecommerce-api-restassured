@@ -28,7 +28,6 @@ public class CategoryTest extends BaseTest {
                 .when()
                 .post("/categories/admin")
                 .then()
-                .log().ifValidationFails()
                 .statusCode(201)
                 .body("id", notNullValue())
                 .body("id", instanceOf(Integer.class))
@@ -45,9 +44,8 @@ public class CategoryTest extends BaseTest {
                 .when()
                 .get("/categories/{id}", category.getId())
                 .then()
-                .log().ifValidationFails()
                 .statusCode(200)
-                .body("id", equalTo(category.getId()))
+                .body("id", equalTo(category.getId().intValue()))
                 .body("name", equalTo(category.getName()))
                 .body("description", equalTo(category.getDescription()));
     }
@@ -66,7 +64,7 @@ public class CategoryTest extends BaseTest {
                 .then()
                 .log().ifValidationFails()
                 .statusCode(200)
-                .body("id", equalTo(category.getId()))
+                .body("id", equalTo(category.getId().intValue()))
                 .body("name", equalTo(categoryName));
     }
 
@@ -78,7 +76,7 @@ public class CategoryTest extends BaseTest {
         given()
                 .spec(requestSpec(token))
                 .when()
-                .delete("/categories/admin/{id}", category.getId())
+                .delete("/categories/admin/{id}", category.getId().intValue())
                 .then()
                 .log().ifValidationFails()
                 .statusCode(204);
@@ -98,7 +96,7 @@ public class CategoryTest extends BaseTest {
                 .log().ifValidationFails()
                 .statusCode(200)
                 .body("size()", greaterThanOrEqualTo(2))
-                .body("content.id", hasItems(category1.getId(), category2.getId()))
+                .body("content.id", hasItems(category1.getId().intValue(), category2.getId().intValue()))
                 .body("content.name", hasItems(category1.getName(), category2.getName()));;
     }
 

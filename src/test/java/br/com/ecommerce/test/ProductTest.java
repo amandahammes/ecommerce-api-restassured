@@ -24,7 +24,7 @@ public class ProductTest extends BaseTest {
     public void shouldCreateProductSuccessfullyWithValidInformation(){
         CategoryDTO newCategory = categoryService.createCategory();
         String token = categoryService.getToken();
-        Integer categoryId = newCategory.getId();
+        Long categoryId = newCategory.getId();
         ProductDTO product = DataFactory.createRandomProduct(categoryId);
         given()
                 .spec(requestSpec(token))
@@ -35,8 +35,8 @@ public class ProductTest extends BaseTest {
                 .log().ifValidationFails()
                 .spec(responseSpecCode201CreatedContent())
                 .body("sku", notNullValue())
-                .body("categoryId", equalTo(categoryId))
-                .body("priceCents", equalTo(product.getPriceCents()))
+                .body("categoryId", equalTo(categoryId.intValue()))
+                .body("priceCents", equalTo(product.getPriceCents().intValue()))
                 .body("stockQuantity", equalTo(product.getStockQuantity()));
     }
 
@@ -45,7 +45,7 @@ public class ProductTest extends BaseTest {
     public void shouldGetProductSuccessfullyWithValidInformation(){
         CategoryDTO newCategory = categoryService.createCategory();
         String token = categoryService.getToken();
-        Integer categoryId = newCategory.getId();
+        Long categoryId = newCategory.getId();
         ProductDTO newProduct = productService.createProduct(categoryId, token);
 
         given()
@@ -57,8 +57,8 @@ public class ProductTest extends BaseTest {
                 .spec(responseSpecCode200())
                 .body("sku", notNullValue())
                 .body("sku", equalTo(newProduct.getSku()))
-                .body("categoryId", equalTo(categoryId))
-                .body("priceCents", equalTo(newProduct.getPriceCents()))
+                .body("categoryId", equalTo(categoryId.intValue()))
+                .body("priceCents", equalTo(newProduct.getPriceCents().intValue()))
                 .body("stockQuantity", equalTo(newProduct.getStockQuantity()));
     }
     @Test
@@ -66,7 +66,7 @@ public class ProductTest extends BaseTest {
     public void shouldPutProductSuccessfullyWithValidInformation(){
         CategoryDTO newCategory = categoryService.createCategory();
         String token = categoryService.getToken();
-        Integer categoryId = newCategory.getId();
+        Long categoryId = newCategory.getId();
         ProductDTO newProduct = productService.createProduct(categoryId, token);
         String newNameProduct = dataFactory.createRandomProductName();
         newProduct.setName(newNameProduct);
@@ -80,8 +80,8 @@ public class ProductTest extends BaseTest {
                 .spec(responseSpecCode200())
                 .body("sku", equalTo(newProduct.getSku()))
                 .body("name", equalTo(newNameProduct))
-                .body("categoryId", equalTo(categoryId))
-                .body("priceCents", equalTo(newProduct.getPriceCents()))
+                .body("categoryId", equalTo(categoryId.intValue()))
+                .body("priceCents", equalTo(newProduct.getPriceCents().intValue()))
                 .body("stockQuantity", equalTo(newProduct.getStockQuantity()));
     }
 
@@ -90,7 +90,7 @@ public class ProductTest extends BaseTest {
     public void shouldDeleteProductSuccessfullyWithValidInformation() {
         CategoryDTO newCategory = categoryService.createCategory();
         String token = categoryService.getToken();
-        Integer categoryId = newCategory.getId();
+        Long categoryId = newCategory.getId();
         ProductDTO newProduct = productService.createProduct(categoryId, token);
         given()
                 .spec(requestSpec(token))
@@ -116,7 +116,7 @@ public class ProductTest extends BaseTest {
                 .log().ifValidationFails()
                 .spec(responseSpecCode200())
                 .body("size()", greaterThanOrEqualTo(2))
-                .body("content.id", hasItems(product1.getId(), product2.getId()))
+                .body("content.id", hasItems(product1.getId().intValue(), product2.getId().intValue()))
                 .body("content.name", hasItems(product1.getName(), product2.getName()));
     }
 }
