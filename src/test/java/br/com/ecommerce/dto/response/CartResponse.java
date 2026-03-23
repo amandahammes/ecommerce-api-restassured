@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CartResponse {
-    private Integer id;
+    private Long id;
     private List<CartResponseItem> items;
-    private Integer totalCents;
+    private Long totalCents;
 }

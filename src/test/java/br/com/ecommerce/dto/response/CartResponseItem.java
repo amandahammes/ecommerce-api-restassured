@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CartResponseItem {
-    private Integer itemId;
-    private Integer productId;
+    private Long itemId;
+    private Long productId;
     private String productName;
     private Integer quantity;
-    private Integer unitPrice;
-    private Integer subTotal;
+    private Long unitPrice;
+    private Long subTotal;
 }

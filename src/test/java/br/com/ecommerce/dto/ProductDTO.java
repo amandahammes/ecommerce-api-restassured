@@ -10,11 +10,11 @@ import lombok.Builder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
-    private Integer id;
+    private Long id;
     private String sku;
     private String name;
-    private Integer categoryId;
-    private Integer priceCents;
+    private Long categoryId;
+    private Long priceCents;
     private String currency;
     private boolean active;
     private Integer stockQuantity;

@@ -12,5 +12,5 @@ import lombok.Builder;
 public class CategoryDTO {
     private String name;
     private String description;
-    private Integer id;
+    private Long id;
 }
