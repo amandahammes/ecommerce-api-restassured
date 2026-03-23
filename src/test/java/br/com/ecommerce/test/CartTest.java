@@ -63,4 +63,40 @@ public class CartTest extends BaseTest {
                 .body("items.productId", hasItems(product1.getId().intValue(), product2.getId().intValue()))
                 .body("items.size()", is(2));
     }
+
+    @Test
+    @DisplayName("Deve ter sucesso ao deletar carrinho")
+    public void shouldDeleteCartSuccessfully(){
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product = productService.createProduct(category.getId(), token);
+        CartResponse addCartItem = cartService.addItemToCart(product.getId(), token);
+
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .delete("/cart")
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode204());
+    }
+
+    @Test
+    @DisplayName("Deve ter sucesso ao deletar item do carrinho")
+    public void shouldDeleteItemCartSuccessfully(){
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product1 = productService.createProduct(category.getId(), token);
+        ProductDTO product2 = productService.createProduct(category.getId(), token);
+        CartResponse addCartItem1 = cartService.addItemToCart(product2.getId(), token);
+        CartResponse addCartItem2 = cartService.addItemToCart(product1.getId(), token);
+
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .delete("/cart/items/{productId}",product1.getId().intValue())
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode204());
+    }
 }
