@@ -1,9 +1,9 @@
 package br.com.ecommerce.dataFactory;
 
-import br.com.ecommerce.model.CartRequest;
-import br.com.ecommerce.model.Category;
-import br.com.ecommerce.model.Product;
-import br.com.ecommerce.model.User;
+import br.com.ecommerce.dto.request.CartRequest;
+import br.com.ecommerce.dto.CategoryDTO;
+import br.com.ecommerce.dto.ProductDTO;
+import br.com.ecommerce.dto.UserDTO;
 import com.github.javafaker.Faker;
 
 
@@ -11,8 +11,8 @@ public class DataFactory {
 
     private static final Faker faker = new Faker();
 
-    public static User createRandomUser() {
-        return User.builder()
+    public static UserDTO createRandomUser() {
+        return UserDTO.builder()
                 .name(faker.name().firstName())
                 .email(faker.internet().emailAddress())
                 .password(faker.internet().password(8,15,true,true))
@@ -20,8 +20,8 @@ public class DataFactory {
                 .build();
     }
 
-    public static Category createRandomCategory() {
-        return Category.builder()
+    public static CategoryDTO createRandomCategory() {
+        return CategoryDTO.builder()
                 .name(faker.commerce().department())
                 .description(faker.lorem().sentence(5))
                 .build();
@@ -31,8 +31,8 @@ public class DataFactory {
         return faker.commerce().productName();
     }
 
-    public static Product createRandomProduct(Integer categoryId) {
-        return Product.builder()
+    public static ProductDTO createRandomProduct(Integer categoryId) {
+        return ProductDTO.builder()
                 .sku(faker.number().digits(5))
                 .name(faker.commerce().productName())
                 .categoryId(categoryId)

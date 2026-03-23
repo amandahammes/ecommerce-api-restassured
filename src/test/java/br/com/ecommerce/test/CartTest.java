@@ -1,9 +1,9 @@
 package br.com.ecommerce.test;
 
 import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.model.CartRequest;
-import br.com.ecommerce.model.Category;
-import br.com.ecommerce.model.Product;
+import br.com.ecommerce.dto.request.CartRequest;
+import br.com.ecommerce.dto.CategoryDTO;
+import br.com.ecommerce.dto.ProductDTO;
 import br.com.ecommerce.service.CartService;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
@@ -23,9 +23,9 @@ public class CartTest extends BaseTest {
     @Test
     @DisplayName("Deve ter sucesso ao adicionar item ao carrinho")
     public void shouldAddProductToCartSuccessfully(){
-        Category category = categoryService.createCategory();
+        CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
-        Product product = productService.createProduct(category.getId(), token);
+        ProductDTO product = productService.createProduct(category.getId(), token);
         CartRequest addCartItem = DataFactory.createCartItem(product.getId());
 
         given()
@@ -45,10 +45,10 @@ public class CartTest extends BaseTest {
     @Test
     @DisplayName("Deve ter sucesso ao pegar informações do carrinho")
     public void shouldGetCartSuccessfully(){
-        Category category = categoryService.createCategory();
+        CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
-        Product product1 = productService.createProduct(category.getId(), token);
-        Product product2 = productService.createProduct(category.getId(), token);
+        ProductDTO product1 = productService.createProduct(category.getId(), token);
+        ProductDTO product2 = productService.createProduct(category.getId(), token);
         CartRequest addCartItem1 = cartService.addItemToCart(product2.getId(), token);
         CartRequest addCartItem2 = cartService.addItemToCart(product1.getId(), token);
 

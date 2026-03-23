@@ -1,21 +1,17 @@
-package br.com.ecommerce.model;
+package br.com.ecommerce.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CartResponseItem {
-    private Integer itemId;
-    private Integer produtcId;
-    private String productName;
+public class CartRequest {
+    private Integer productId;
     private Integer quantity;
-    private Integer unitPrice;
-    private Integer subTotal;
 }

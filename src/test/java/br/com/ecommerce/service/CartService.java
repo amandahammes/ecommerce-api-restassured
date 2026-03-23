@@ -1,7 +1,7 @@
 package br.com.ecommerce.service;
 
 import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.model.CartRequest;
+import br.com.ecommerce.dto.request.CartRequest;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.given;

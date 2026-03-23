@@ -1,7 +1,7 @@
 package br.com.ecommerce.test;
 
 import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.model.User;
+import br.com.ecommerce.dto.UserDTO;
 import br.com.ecommerce.service.UserService;
 import br.com.ecommerce.test.base.BaseTest;
 import static org.hamcrest.Matchers.*;
@@ -16,7 +16,7 @@ public class UserTest extends BaseTest {
     @Test
     @DisplayName("Deve ter sucesso ao criar Usuário com credenciais válidas")
     public void shouldCreateUserSuccessfullyWithValidCredentials(){
-        User randomUser = DataFactory.createRandomUser();
+        UserDTO randomUser = DataFactory.createRandomUser();
         given()
                 .spec(publicSpec())
                 .body(randomUser)
@@ -29,8 +29,8 @@ public class UserTest extends BaseTest {
     @Test
     @DisplayName("Deve ter sucesso ao realizar login do Usuário com credenciais válidas")
     public void shouldLoginUserSuccessfullyWithValidCredentials(){
-        User userLogin = userService.createUser();
-        User loginCredentials = User.builder()
+        UserDTO userLogin = userService.createUser();
+        UserDTO loginCredentials = UserDTO.builder()
                 .email(userLogin.getEmail())
                 .password(userLogin.getPassword())
                 .build();

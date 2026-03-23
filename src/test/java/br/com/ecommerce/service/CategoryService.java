@@ -1,7 +1,7 @@
 package br.com.ecommerce.service;
 
 import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.model.Category;
+import br.com.ecommerce.dto.CategoryDTO;
 import io.restassured.http.ContentType;
 import lombok.Getter;
 
@@ -14,9 +14,9 @@ public class CategoryService {
     @Getter
     private String token;
 
-    public Category createCategory(){
+    public CategoryDTO createCategory(){
         token = userService.loginUserAdmin();
-        Category newCategory = dataFactory.createRandomCategory();
+        CategoryDTO newCategory = dataFactory.createRandomCategory();
         return given()
                 .header("Authorization", "Bearer " + token)
                 .contentType(ContentType.JSON)
@@ -29,6 +29,6 @@ public class CategoryService {
                 .body("id", notNullValue())
                 .body("id", instanceOf(Integer.class))
                 .extract()
-                .as(Category.class);
+                .as(CategoryDTO.class);
     }
 }

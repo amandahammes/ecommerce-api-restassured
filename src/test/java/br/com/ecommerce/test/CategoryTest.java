@@ -1,7 +1,7 @@
 package br.com.ecommerce.test;
 
 import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.model.Category;
+import br.com.ecommerce.dto.CategoryDTO;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.UserService;
 import br.com.ecommerce.test.base.BaseTest;
@@ -20,7 +20,7 @@ public class CategoryTest extends BaseTest {
     @Test
     @DisplayName("Deve ter sucesso ao criar Categoria com informações válidas")
     public void shouldCreateCategorySuccessfullyWithValidInformation(){
-        Category newCategory = DataFactory.createRandomCategory();
+        CategoryDTO newCategory = DataFactory.createRandomCategory();
         String token = userService.loginUserAdmin();
         given()
                 .spec(requestSpec(token))
@@ -38,7 +38,7 @@ public class CategoryTest extends BaseTest {
     @Test
     @DisplayName("Deve ter sucesso ao pegar Categoria com informações válidas")
     public void shouldGetCategorySuccessfullyWithValidInformation() {
-        Category category = categoryService.createCategory();
+        CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
         given()
                 .spec(requestSpec(token))
@@ -54,7 +54,7 @@ public class CategoryTest extends BaseTest {
     @Test
     @DisplayName("Deve ter sucesso ao alterar Categoria com informações válidas")
     public void shouldPutCategorySuccessfullyWithValidInformation() {
-        Category category = categoryService.createCategory();
+        CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
         String categoryName = dataFactory.createRandomCategoryName();
         category.setName(categoryName);
@@ -73,7 +73,7 @@ public class CategoryTest extends BaseTest {
     @Test
     @DisplayName("Deve ter sucesso ao deletar Categoria")
     public void shouldDeleteCategorySuccessfullyWithValidInformation() {
-        Category category = categoryService.createCategory();
+        CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
         given()
                 .spec(requestSpec(token))
@@ -87,8 +87,8 @@ public class CategoryTest extends BaseTest {
     @Test
     @DisplayName("Deve ter sucesso ao pegar Categoria com informações válidas")
     public void shouldGetAllCategoriesSuccessfullyWithValidInformation() {
-        Category category1 = categoryService.createCategory();
-        Category category2 = categoryService.createCategory();
+        CategoryDTO category1 = categoryService.createCategory();
+        CategoryDTO category2 = categoryService.createCategory();
         String token = categoryService.getToken();
         given()
                 .spec(requestSpec(token))

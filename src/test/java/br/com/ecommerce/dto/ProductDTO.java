@@ -1,4 +1,4 @@
-package br.com.ecommerce.model;
+package br.com.ecommerce.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.Builder;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class ProductDTO {
     private Integer id;
     private String sku;
     private String name;

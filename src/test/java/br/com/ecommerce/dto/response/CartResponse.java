@@ -1,4 +1,4 @@
-package br.com.ecommerce.model;
+package br.com.ecommerce.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
