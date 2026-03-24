@@ -79,9 +79,29 @@ public class OrderTest extends BaseTest {
                 .when()
                 .get("/orders")
                 .then()
-                .log().all()
+                .log().ifValidationFails()
                 .spec(responseSpecCode200())
                 .body("status", hasItem("PENDING"))
                 .body("[0].items.size()", greaterThan(0));
+    }
+
+    @Test
+    @DisplayName("Deve listar pedido do usuário por ID com sucesso.")
+    public void shouldGetOrderByIdSuccessfully(){
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product = productService.createProduct(category.getId(), token);
+        CartResponseDTO addCartItem = cartService.addItemToCart(product.getId(), token);
+        OrderResponseDTO checkout = orderService.makingCheckout(token);
+        Integer idCheckout = checkout.getId().intValue();
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .get("/orders/{id}", idCheckout)
+                .then()
+                .log().all()
+                .spec(responseSpecCode200())
+                .body("status", equalTo("PENDING"))
+                .body("items.size()", greaterThan(0));
     }
 }
