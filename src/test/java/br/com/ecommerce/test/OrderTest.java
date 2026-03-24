@@ -1,9 +1,9 @@
 package br.com.ecommerce.test;
 
 import br.com.ecommerce.dto.CategoryDTO;
-import br.com.ecommerce.dto.OrderDTO;
+import br.com.ecommerce.dto.response.OrderResponseDTO;
 import br.com.ecommerce.dto.ProductDTO;
-import br.com.ecommerce.dto.response.CartResponse;
+import br.com.ecommerce.dto.response.CartResponseDTO;
 import br.com.ecommerce.service.CartService;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.OrderService;
@@ -28,8 +28,8 @@ public class OrderTest extends BaseTest {
         String token = categoryService.getToken();
         ProductDTO product1 = productService.createProduct(category.getId(), token);
         ProductDTO product2 = productService.createProduct(category.getId(), token);
-        CartResponse addCartItem1 = cartService.addItemToCart(product2.getId(), token);
-        CartResponse addCartItem2 = cartService.addItemToCart(product1.getId(), token);
+        CartResponseDTO addCartItem1 = cartService.addItemToCart(product2.getId(), token);
+        CartResponseDTO addCartItem2 = cartService.addItemToCart(product1.getId(), token);
 
         given()
                 .spec(requestSpec(token))
@@ -49,8 +49,8 @@ public class OrderTest extends BaseTest {
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
         ProductDTO product = productService.createProduct(category.getId(), token);
-        CartResponse addCartItem = cartService.addItemToCart(product.getId(), token);
-        OrderDTO checkout = orderService.makingCheckout(token);
+        CartResponseDTO addCartItem = cartService.addItemToCart(product.getId(), token);
+        OrderResponseDTO checkout = orderService.makingCheckout(token);
         Integer idCheckout = checkout.getId().intValue();
 
         given()

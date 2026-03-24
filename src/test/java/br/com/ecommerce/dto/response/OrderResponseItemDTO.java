@@ -1,17 +1,15 @@
-package br.com.ecommerce.dto;
+package br.com.ecommerce.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.OffsetDateTime;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItemDTO {
+public class OrderResponseItemDTO {
     private Long productId;
     private String productName;
     private Integer quantity;

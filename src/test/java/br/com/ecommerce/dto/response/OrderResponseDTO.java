@@ -1,6 +1,5 @@
-package br.com.ecommerce.dto;
+package br.com.ecommerce.dto.response;
 
-import br.com.ecommerce.dto.response.CartResponseItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +12,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDTO {
+public class OrderResponseDTO {
     private Long id;
     private String status;
     private Long totalCents;
     private OffsetDateTime createdAt;
-    private List<OrderItemDTO> items;
+    private List<OrderResponseItemDTO> items;
 }

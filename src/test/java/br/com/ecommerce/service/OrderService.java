@@ -1,14 +1,11 @@
 package br.com.ecommerce.service;
 
-import br.com.ecommerce.dto.OrderDTO;
-import br.com.ecommerce.dto.response.CartResponse;
-import io.restassured.http.ContentType;
+import br.com.ecommerce.dto.response.OrderResponseDTO;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
 
 public class OrderService {
-    public OrderDTO makingCheckout(String token){
+    public OrderResponseDTO makingCheckout(String token){
         return given()
                 .header("Authorization", "Bearer " + token)
                 .when()
@@ -16,6 +13,6 @@ public class OrderService {
                 .then()
                 .statusCode(201)
                 .extract()
-                .as(OrderDTO.class);
+                .as(OrderResponseDTO.class);
     }
 }

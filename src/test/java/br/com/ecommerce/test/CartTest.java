@@ -4,7 +4,7 @@ import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.dto.request.CartRequest;
 import br.com.ecommerce.dto.CategoryDTO;
 import br.com.ecommerce.dto.ProductDTO;
-import br.com.ecommerce.dto.response.CartResponse;
+import br.com.ecommerce.dto.response.CartResponseDTO;
 import br.com.ecommerce.service.CartService;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
@@ -50,8 +50,8 @@ public class CartTest extends BaseTest {
         String token = categoryService.getToken();
         ProductDTO product1 = productService.createProduct(category.getId(), token);
         ProductDTO product2 = productService.createProduct(category.getId(), token);
-        CartResponse addCartItem1 = cartService.addItemToCart(product2.getId(), token);
-        CartResponse addCartItem2 = cartService.addItemToCart(product1.getId(), token);
+        CartResponseDTO addCartItem1 = cartService.addItemToCart(product2.getId(), token);
+        CartResponseDTO addCartItem2 = cartService.addItemToCart(product1.getId(), token);
 
         given()
                 .spec(requestSpec(token))
@@ -70,7 +70,7 @@ public class CartTest extends BaseTest {
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
         ProductDTO product = productService.createProduct(category.getId(), token);
-        CartResponse addCartItem = cartService.addItemToCart(product.getId(), token);
+        CartResponseDTO addCartItem = cartService.addItemToCart(product.getId(), token);
 
         given()
                 .spec(requestSpec(token))
@@ -88,8 +88,8 @@ public class CartTest extends BaseTest {
         String token = categoryService.getToken();
         ProductDTO product1 = productService.createProduct(category.getId(), token);
         ProductDTO product2 = productService.createProduct(category.getId(), token);
-        CartResponse addCartItem1 = cartService.addItemToCart(product2.getId(), token);
-        CartResponse addCartItem2 = cartService.addItemToCart(product1.getId(), token);
+        CartResponseDTO addCartItem1 = cartService.addItemToCart(product2.getId(), token);
+        CartResponseDTO addCartItem2 = cartService.addItemToCart(product1.getId(), token);
 
         given()
                 .spec(requestSpec(token))
