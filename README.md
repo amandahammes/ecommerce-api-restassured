@@ -35,13 +35,14 @@ O objetivo final é garantir que as operações CRUD de `produto`, `categoria`, 
 | CT-018 |      CART      |   Positivo    | Busca carrinho do usuário.                          | GET    | /cart                     | 200    | Json com produtos e quantidades.    |
 | CT-019 |      CART      |   Positivo    | Deleta carrinho.                                    | DELETE | /cart                     | 204    | -                                   |
 | CT-020 |      CART      |   Positivo    | Deleta item do carrinho.                            | DELETE | /cart/items/{id}          | 204    | -                                   |
+| CT-013 |     ORDERS     |   Positivo    | Finalizar checkout.                                 | POST   | /orders/checkout          | 200    | Eco dos dados referente ao pedido.  |
+| CT-014 |     ORDERS     |   Positivo    | Atualizar status do pedido.                         | PATCH  | /orders/admin/{id}/status | 200    | Eco dos dados referente ao pedido.  |
+
 
 ### Cenários de testes a serem desenvolvidos nas próximas etapas:
 
 | ID     | Funcionalidade | Classificação |                   Cenário                           | Método | Endpoint                  | Status | Resposta Esperada                   | 
 |:-------|:---------------|:--------------|:----------------------------------------------------|:-------|:--------------------------|:-------|:------------------------------------|
-| CT-013 |     ORDERS     |   Positivo    | Finalizar checkout.                                 | POST   | /orders/checkout          | 200    | Eco dos dados referente ao pedido.  |
-| CT-014 |     ORDERS     |   Positivo    | Atualizar status do pedido.                         | PATCH  | /orders/admin/{id}/status | 200    | Eco dos dados referente ao pedido.  |
 | CT-015 |     ORDERS     |   Positivo    | Listar pedidos do usuario.                          | GET    | /orders                   | 200    | Eco dos dados referente aos pedidos.|
 | CT-016 |     ORDERS     |   Positivo    | Consultar pedido por {id}.                          | GET    | /orders/{id}              | 200    | Eco dos dados referente ao pedido.  |
 | CT-101 |      USER      |   Negativo    | Realizar cadastro com e-mail já existente.          | POST   | /users/login              | 403    | Msg: Este e-mail já está cadastrado.|
