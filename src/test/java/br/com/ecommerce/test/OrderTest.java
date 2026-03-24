@@ -59,8 +59,9 @@ public class OrderTest extends BaseTest {
                 .when()
                 .patch("/orders/admin/{id}/status", idCheckout)
                 .then()
-                .log().all()
+                .log().ifValidationFails()
                 .spec(responseSpecCode200());
     }
+
 
 }
