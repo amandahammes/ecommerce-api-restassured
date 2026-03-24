@@ -63,5 +63,25 @@ public class OrderTest extends BaseTest {
                 .spec(responseSpecCode200());
     }
 
+    @Test
+    @DisplayName("Deve listar todos os pedidos do usuário com sucesso.")
+    public void shouldGetAllOrdersSuccessfully(){
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product1 = productService.createProduct(category.getId(), token);
+        ProductDTO product2 = productService.createProduct(category.getId(), token);
+        CartResponseDTO addCartItem1 = cartService.addItemToCart(product2.getId(), token);
+        CartResponseDTO addCartItem2 = cartService.addItemToCart(product1.getId(), token);
+        OrderResponseDTO checkout = orderService.makingCheckout(token);
 
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .get("/orders")
+                .then()
+                .log().all()
+                .spec(responseSpecCode200())
+                .body("status", hasItem("PENDING"))
+                .body("[0].items.size()", greaterThan(0));
+    }
 }
