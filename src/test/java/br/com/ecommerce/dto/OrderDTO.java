@@ -16,5 +16,4 @@ public class OrderDTO {
     private String status;
     private Long totalCents;
     private OffsetDateTime createdAt;
-
 }
