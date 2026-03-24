@@ -8,7 +8,7 @@ import static io.restassured.RestAssured.given;
 
 public class UserService {
 
-public UserDTO createUser(){
+    public UserDTO createUser(){
         UserDTO randomUser = DataFactory.createRandomUser();
         given()
                 .contentType(ContentType.JSON)

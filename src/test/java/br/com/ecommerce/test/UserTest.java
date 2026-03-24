@@ -12,6 +12,7 @@ import static io.restassured.RestAssured.*;
 public class UserTest extends BaseTest {
 
     private UserService userService = new UserService();
+    private DataFactory dataFactory = new DataFactory();
 
     @Test
     @DisplayName("Deve ter sucesso ao criar Usuário com credenciais válidas")
@@ -42,5 +43,21 @@ public class UserTest extends BaseTest {
                 .then()
                 .spec(responseSpecCode200())
                 .body("token", notNullValue());
+    }
+
+    @Test
+    @DisplayName("Deve gerar mensagem de erro ao realizar cadastro com e-mail já existente")
+    public void shouldFailToRegisterUserWithExistingEmail(){
+        UserDTO userLogin = userService.createUser();
+        UserDTO registerCredentials = dataFactory.createRandomUser();
+        registerCredentials.setEmail(userLogin.getEmail());
+        given()
+                .spec(publicSpec())
+                .body(registerCredentials)
+                .when()
+                .post("/users/register")
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode409());
     }
 }

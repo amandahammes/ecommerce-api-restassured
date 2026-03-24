@@ -58,4 +58,10 @@ public class BaseTest {
                 .expectStatusCode(204)
                 .build();
     }
+
+    protected ResponseSpecification responseSpecCode409() {
+        return new ResponseSpecBuilder()
+                .expectStatusCode(409)
+                .build();
+    }
 }
