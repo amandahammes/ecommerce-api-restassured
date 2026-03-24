@@ -60,4 +60,22 @@ public class UserTest extends BaseTest {
                 .log().ifValidationFails()
                 .spec(responseSpecCode409());
     }
+
+    @Test
+    @DisplayName("Deve gerar mensagem de erro ao realizar login com senha inválida")
+    public void shouldFailToLoginUserWithInvalidPassword(){
+        UserDTO userLogin = userService.createUser();
+        UserDTO loginCredentials = UserDTO.builder()
+                .email(userLogin.getEmail())
+                .password(userLogin.getPassword() + "erro")
+                .build();
+        given()
+                .spec(publicSpec())
+                .body(loginCredentials)
+                .when()
+                .post("/users/login")
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode401());
+    }
 }
