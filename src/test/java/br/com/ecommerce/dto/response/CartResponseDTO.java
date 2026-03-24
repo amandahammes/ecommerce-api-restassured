@@ -6,16 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CartResponseItem {
-    private Long itemId;
-    private Long productId;
-    private String productName;
-    private Integer quantity;
-    private Long unitPrice;
-    private Long subTotal;
+public class CartResponseDTO {
+    private Long id;
+    private List<CartResponseItemDTO> items;
+    private Long totalCents;
 }

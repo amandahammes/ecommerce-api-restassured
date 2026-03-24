@@ -35,29 +35,31 @@ O objetivo final é garantir que as operações CRUD de `produto`, `categoria`, 
 | CT-018 |      CART      |   Positivo    | Busca carrinho do usuário.                          | GET    | /cart                     | 200    | Json com produtos e quantidades.    |
 | CT-019 |      CART      |   Positivo    | Deleta carrinho.                                    | DELETE | /cart                     | 204    | -                                   |
 | CT-020 |      CART      |   Positivo    | Deleta item do carrinho.                            | DELETE | /cart/items/{id}          | 204    | -                                   |
-
-### Cenários de testes a serem desenvolvidos nas próximas etapas:
-
-| ID     | Funcionalidade | Classificação |                   Cenário                           | Método | Endpoint                  | Status | Resposta Esperada                   | 
-|:-------|:---------------|:--------------|:----------------------------------------------------|:-------|:--------------------------|:-------|:------------------------------------|
 | CT-013 |     ORDERS     |   Positivo    | Finalizar checkout.                                 | POST   | /orders/checkout          | 200    | Eco dos dados referente ao pedido.  |
 | CT-014 |     ORDERS     |   Positivo    | Atualizar status do pedido.                         | PATCH  | /orders/admin/{id}/status | 200    | Eco dos dados referente ao pedido.  |
 | CT-015 |     ORDERS     |   Positivo    | Listar pedidos do usuario.                          | GET    | /orders                   | 200    | Eco dos dados referente aos pedidos.|
 | CT-016 |     ORDERS     |   Positivo    | Consultar pedido por {id}.                          | GET    | /orders/{id}              | 200    | Eco dos dados referente ao pedido.  |
-| CT-101 |      USER      |   Negativo    | Realizar cadastro com e-mail já existente.          | POST   | /users/login              | 403    | Msg: Este e-mail já está cadastrado.|
-| CT-102 |   CATEGORIES   |   Negativo    | Realizar cadastro com senha inválida.               | POST   | /users/login              | 400    | Msg: size must be between 8 and 147483647. |
-| CT-103 |   CATEGORIES   |   Negativo    | Criar categoria já existente.                       | POST   | /categories/admin         | 403    | Msg: Já existe uma categoria com este nome.      |
+
+
+### Cenários de testes a serem desenvolvidos nas próximas etapas:
+
+| ID     | Funcionalidade | Classificação | Cenário                                             | Método | Endpoint                  | Status | Resposta Esperada                                  | 
+|:-------|:---------------|:--------------|:----------------------------------------------------|:-------|:--------------------------|:-------|:---------------------------------------------------|
+| CT-101 |      USER      |   Negativo    | Realizar cadastro com e-mail já existente.          | POST   | /users/login              | 403    | Msg: Este e-mail já está cadastrado.               |
+| CT-102 |   CATEGORIES   |   Negativo    | Realizar cadastro com senha inválida.               | POST   | /users/login              | 400    | Msg: size must be between 8 and 147483647.         |
+| CT-103 |   CATEGORIES   |   Negativo    | Criar categoria já existente.                       | POST   | /categories/admin         | 403    | Msg: Já existe uma categoria com este nome.        |
 | CT-104 |   CATEGORIES   |   Negativo    | Deletar categoria inexistente.                      | DELETE | /categories/admin/id      | 404    | Msg: Impossível excluir: Categoria não encontrada. |
-| CT-105 |   CATEGORIES   |   Negativo    | Deletar categoria com produto vinculado.            | DELETE | /categories/admin/id      | -      | A ser definido.                     |
-| CT-106 |   CATEGORIES   |   Negativo    | Alterar categoria para outra já existente.          | PUT    | /categories/admin/id      | 403    | -                                   |
-| CT-107 |    PRODUCTS    |   Negativo    | Criar produto já existente.                         | POST   | /admin/products           | 403    | -                                   |
-| CT-108 |    PRODUCTS    |   Negativo    | Deletar produto inexistente.                        | DELETE | /admin/products/id        | 404    | Msg: Produto não encontrado.        |
-| CT-109 |    PRODUCTS    |   Negativo    | Alterar produto para outro já existente.            | PUT    | /admin/products/id        | -      | A ser definido.                     |
-| CT-110 |     ORDERS     |   Negativo    | Finalizar checkout carrinho inexistente.            | POST   | /orders/checkout          | 404    | Msg: Carrinho não encontrado para este usuário. |
-| CT-111 |      CART      |   Negativo    | Adicionar produto inativo no carrinho.              | POST   | /cart/items               | 404    | Msg: Produto não encontrado ou inativo. |
-| CT-112 |      CART      |   Negativo    | Adicionar + produtodo que o disponível no carrinho. | POST   | /cart/items               | 400    | Msg: Estoque insuficiente.              |
-| CT-113 |      CART      |   Negativo    | Deletar carrinho com Checkout finalizado.           | DELETE | /cart                     | -      | A ser definido.                         |
-| CT-114 |      CART      |   Negativo    | Deletar item do carrinho com Checkout finalizado.   | DELETE | /cart/items/id            | 404    | Msg: Carrinho vazio ou não encontrado.  |
+| CT-105 |   CATEGORIES   |   Negativo    | Deletar categoria com produto vinculado.            | DELETE | /categories/admin/id      | -      | A ser definido.                                    |
+| CT-106 |   CATEGORIES   |   Negativo    | Alterar categoria para outra já existente.          | PUT    | /categories/admin/id      | 403    | -                                                  |
+| CT-107 |    PRODUCTS    |   Negativo    | Criar produto já existente.                         | POST   | /admin/products           | 403    | -                                                  |
+| CT-108 |    PRODUCTS    |   Negativo    | Deletar produto inexistente.                        | DELETE | /admin/products/id        | 404    | Msg: Produto não encontrado.                       |
+| CT-109 |    PRODUCTS    |   Negativo    | Alterar produto para outro já existente.            | PUT    | /admin/products/id        | -      | A ser definido.                                    |
+| CT-110 |     ORDERS     |   Negativo    | Finalizar checkout carrinho inexistente.            | POST   | /orders/checkout          | 404    | Msg: Carrinho não encontrado para este usuário.    |
+| CT-111 |     ORDERS     |   Negativo    | Atualizar status com valor inexistente.             | PATCH  | /orders/admin/{id}/status | 404    | Msg: Carrinho não encontrado para este usuário.    |
+| CT-112 |      CART      |   Negativo    | Adicionar produto inativo no carrinho.              | POST   | /cart/items               | 404    | Msg: Produto não encontrado ou inativo.            |
+| CT-113 |      CART      |   Negativo    | Adicionar + produtodo que o disponível no carrinho. | POST   | /cart/items               | 400    | Msg: Estoque insuficiente.                         |
+| CT-114 |      CART      |   Negativo    | Deletar carrinho com Checkout finalizado.           | DELETE | /cart                     | -      | A ser definido.                                    |
+| CT-115 |      CART      |   Negativo    | Deletar item do carrinho com Checkout finalizado.   | DELETE | /cart/items/id            | 404    | Msg: Carrinho vazio ou não encontrado.             |
 
 ## Ferramentas e Tecnologias Utilizadas
 

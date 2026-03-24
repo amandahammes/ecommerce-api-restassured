@@ -1,12 +1,12 @@
 package br.com.ecommerce.test;
 
-import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.dto.request.CartRequest;
 import br.com.ecommerce.dto.CategoryDTO;
+import br.com.ecommerce.dto.response.OrderResponseDTO;
 import br.com.ecommerce.dto.ProductDTO;
 import br.com.ecommerce.dto.response.CartResponseDTO;
 import br.com.ecommerce.service.CartService;
 import br.com.ecommerce.service.CategoryService;
+import br.com.ecommerce.service.OrderService;
 import br.com.ecommerce.service.ProductService;
 import br.com.ecommerce.test.base.BaseTest;
 import org.junit.jupiter.api.DisplayName;
@@ -15,37 +15,15 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-public class CartTest extends BaseTest {
-
+public class OrderTest extends BaseTest {
     private CategoryService categoryService = new CategoryService();
     private ProductService productService = new ProductService();
     private CartService cartService = new CartService();
+    private OrderService orderService = new OrderService();
 
     @Test
-    @DisplayName("Deve ter sucesso ao adicionar item ao carrinho")
-    public void shouldAddProductToCartSuccessfully(){
-        CategoryDTO category = categoryService.createCategory();
-        String token = categoryService.getToken();
-        ProductDTO product = productService.createProduct(category.getId(), token);
-        CartRequest addCartItem = DataFactory.createCartItem(product.getId());
-
-        given()
-                .spec(requestSpec(token))
-                .body(addCartItem)
-                .when()
-                .post("/cart/items")
-                .then()
-                .log().ifValidationFails()
-                .spec(responseSpecCode201Created())
-                .body("items[0].productId", equalTo(product.getId().intValue()))
-                .body("items[0].productName", equalTo(product.getName()))
-                .body("items[0].quantity", equalTo(addCartItem.getQuantity()))
-                .body("totalCents", equalTo(addCartItem.getQuantity() * product.getPriceCents().intValue()));
-    }
-
-    @Test
-    @DisplayName("Deve ter sucesso ao pegar informações do carrinho")
-    public void shouldGetCartSuccessfully(){
+    @DisplayName("Deve finalizar checkout com sucesso.")
+    public void shouldFinishCheckoutSuccessfully(){
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
         ProductDTO product1 = productService.createProduct(category.getId(), token);
@@ -56,47 +34,74 @@ public class CartTest extends BaseTest {
         given()
                 .spec(requestSpec(token))
                 .when()
-                .get("/cart")
+                .post("/orders/checkout")
                 .then()
                 .log().ifValidationFails()
-                .spec(responseSpecCode200())
-                .body("items.productId", hasItems(product1.getId().intValue(), product2.getId().intValue()))
-                .body("items.size()", is(2));
+                .spec(responseSpecCode201CreatedContent())
+                .body("createdAt", notNullValue())
+                .body("status", equalTo("PENDING"))
+                .body("items.size()", greaterThan(0));
     }
 
     @Test
-    @DisplayName("Deve ter sucesso ao deletar carrinho")
-    public void shouldDeleteCartSuccessfully(){
+    @DisplayName("Deve alterar o status do pedido para um valor válido")
+    public void shouldPatchOrderStatusSuccessfully(){
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
         ProductDTO product = productService.createProduct(category.getId(), token);
         CartResponseDTO addCartItem = cartService.addItemToCart(product.getId(), token);
+        OrderResponseDTO checkout = orderService.makingCheckout(token);
+        Integer idCheckout = checkout.getId().intValue();
 
         given()
                 .spec(requestSpec(token))
+                .queryParam("status", "SHIPPED")
                 .when()
-                .delete("/cart")
+                .patch("/orders/admin/{id}/status", idCheckout)
                 .then()
                 .log().ifValidationFails()
-                .spec(responseSpecCode204());
+                .spec(responseSpecCode200());
     }
 
     @Test
-    @DisplayName("Deve ter sucesso ao deletar item do carrinho")
-    public void shouldDeleteItemCartSuccessfully(){
+    @DisplayName("Deve listar todos os pedidos do usuário com sucesso.")
+    public void shouldGetAllOrdersSuccessfully(){
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
         ProductDTO product1 = productService.createProduct(category.getId(), token);
         ProductDTO product2 = productService.createProduct(category.getId(), token);
         CartResponseDTO addCartItem1 = cartService.addItemToCart(product2.getId(), token);
         CartResponseDTO addCartItem2 = cartService.addItemToCart(product1.getId(), token);
+        OrderResponseDTO checkout = orderService.makingCheckout(token);
 
         given()
                 .spec(requestSpec(token))
                 .when()
-                .delete("/cart/items/{productId}",product1.getId().intValue())
+                .get("/orders")
                 .then()
                 .log().ifValidationFails()
-                .spec(responseSpecCode204());
+                .spec(responseSpecCode200())
+                .body("status", hasItem("PENDING"))
+                .body("[0].items.size()", greaterThan(0));
+    }
+
+    @Test
+    @DisplayName("Deve listar pedido do usuário por ID com sucesso.")
+    public void shouldGetOrderByIdSuccessfully(){
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product = productService.createProduct(category.getId(), token);
+        CartResponseDTO addCartItem = cartService.addItemToCart(product.getId(), token);
+        OrderResponseDTO checkout = orderService.makingCheckout(token);
+        Integer idCheckout = checkout.getId().intValue();
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .get("/orders/{id}", idCheckout)
+                .then()
+                .log().all()
+                .spec(responseSpecCode200())
+                .body("status", equalTo("PENDING"))
+                .body("items.size()", greaterThan(0));
     }
 }

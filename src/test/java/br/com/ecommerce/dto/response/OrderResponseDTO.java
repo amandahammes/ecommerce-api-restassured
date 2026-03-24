@@ -1,20 +1,21 @@
 package br.com.ecommerce.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class CartResponse {
+public class OrderResponseDTO {
     private Long id;
-    private List<CartResponseItem> items;
+    private String status;
     private Long totalCents;
+    private OffsetDateTime createdAt;
+    private List<OrderResponseItemDTO> items;
 }

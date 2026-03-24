@@ -2,13 +2,13 @@ package br.com.ecommerce.service;
 
 import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.dto.request.CartRequest;
-import br.com.ecommerce.dto.response.CartResponse;
+import br.com.ecommerce.dto.response.CartResponseDTO;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.given;
 
 public class CartService {
-    public CartResponse addItemToCart(Long productId, String token) {
+    public CartResponseDTO addItemToCart(Long productId, String token) {
         CartRequest addCartItem = DataFactory.createCartItem(productId);
         return given()
                 .header("Authorization", "Bearer " + token)
@@ -20,6 +20,6 @@ public class CartService {
                 .then()
                 .statusCode(201)
                 .extract()
-                .as(CartResponse.class);
+                .as(CartResponseDTO.class);
     }
 }
