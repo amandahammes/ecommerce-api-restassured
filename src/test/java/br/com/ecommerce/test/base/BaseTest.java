@@ -59,6 +59,12 @@ public class BaseTest {
                 .build();
     }
 
+    protected ResponseSpecification responseSpecCode400() {
+        return new ResponseSpecBuilder()
+                .expectStatusCode(400)
+                .build();
+    }
+
     protected ResponseSpecification responseSpecCode401() {
         return new ResponseSpecBuilder()
                 .expectStatusCode(401)
