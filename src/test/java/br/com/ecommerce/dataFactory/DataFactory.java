@@ -9,7 +9,7 @@ import com.github.javafaker.Faker;
 
 public class DataFactory {
 
-    private static final Faker faker = new Faker();
+    public static Faker faker = new Faker();
 
     public static UserDTO createRandomUser() {
         return UserDTO.builder()
