@@ -45,15 +45,15 @@ O objetivo final é garantir que as operações CRUD de `produto`, `categoria`, 
 | CT-104 | CATEGORIES | Negativo | Deletar categoria inexistente.             | DELETE | /categories/admin/id      | 404    | Msg: Impossível excluir: Categoria não encontrada. |
 | CT-105 | CATEGORIES | Negativo | Deletar categoria com produto vinculado.   | DELETE | /categories/admin/id      | -      | A ser definido.                                    |
 | CT-106 | CATEGORIES | Negativo | Alterar categoria para outra já existente. | PUT    | /categories/admin/id      | 403    | -                                                  |
+| CT-107 | PRODUCTS   | Negativo | Criar produto já existente.                | POST   | /admin/products           | 403    | -                                                  |
+| CT-108 | PRODUCTS   | Negativo | Deletar produto inexistente.               | DELETE | /admin/products/id        | 404    | Msg: Produto não encontrado.                       |
+| CT-109 | PRODUCTS   | Negativo | Alterar produto para outro já existente.   | PUT    | /admin/products/id        | -      | A ser definido.                                    |
 
 
 ### Cenários de testes a serem desenvolvidos nas próximas etapas:
 
 | ID     | Funcionalidade | Classificação | Cenário                                              | Método | Endpoint                  | Status | Resposta Esperada                                  | 
 |:-------|:---------------|:--------------|:-----------------------------------------------------|:-------|:--------------------------|:-------|:---------------------------------------------------|
-| CT-107 | PRODUCTS       |   Negativo    | Criar produto já existente.                          | POST   | /admin/products           | 403    | -                                                  |
-| CT-108 | PRODUCTS       |   Negativo    | Deletar produto inexistente.                         | DELETE | /admin/products/id        | 404    | Msg: Produto não encontrado.                       |
-| CT-109 | PRODUCTS       |   Negativo    | Alterar produto para outro já existente.             | PUT    | /admin/products/id        | -      | A ser definido.                                    |
 | CT-110 | ORDERS         |   Negativo    | Finalizar checkout carrinho inexistente.             | POST   | /orders/checkout          | 404    | Msg: Carrinho não encontrado para este usuário.    |
 | CT-111 | ORDERS         |   Negativo    | Atualizar status com valor inexistente.              | PATCH  | /orders/admin/{id}/status | 404    | Msg: Carrinho não encontrado para este usuário.    |
 | CT-112 | CART           |   Negativo    | Adicionar produto inativo no carrinho.               | POST   | /cart/items               | 404    | Msg: Produto não encontrado ou inativo.            |

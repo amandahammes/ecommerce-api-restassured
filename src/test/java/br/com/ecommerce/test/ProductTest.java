@@ -119,4 +119,33 @@ public class ProductTest extends BaseTest {
                 .body("content.id", hasItems(product1.getId().intValue(), product2.getId().intValue()))
                 .body("content.name", hasItems(product1.getName(), product2.getName()));
     }
+
+    @Test
+    @DisplayName("Deve ter sucesso ao pegar lista de Produtos com informações válidas")
+    public void shouldFailToPutProductToExistingProductName() {
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product1 = productService.createProduct(category.getId(), token);
+        ProductDTO product2 = productService.createProduct(category.getId(), token);
+        Integer id = product2.getId().intValue();
+        ProductDTO productSameName = ProductDTO.builder()
+                .sku(product2.getSku())
+                .name(product1.getName())
+                .priceCents(product2.getPriceCents())
+                .categoryId(product2.getCategoryId())
+                .stockQuantity(product2.getStockQuantity())
+                .currency(product2.getCurrency())
+                .active(product2.isActive())
+                .build();
+
+        given()
+                .spec(requestSpec(token))
+                .body(productSameName)
+                .when()
+                .put("/admin/products/{id}", id)
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode400());
+    }
+
 }
