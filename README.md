@@ -41,13 +41,13 @@ O objetivo final é garantir que as operações CRUD de `produto`, `categoria`, 
 | CT-016 |     ORDERS     |   Positivo    | Consultar pedido por {id}.                 | GET    | /orders/{id}              | 200    | Eco dos dados referente ao pedido.  |
 | CT-101 |      USER      |   Negativo    | Realizar cadastro com e-mail já existente. | POST   | /users/login              | 403    | Msg: Este e-mail já está cadastrado.               |
 | CT-102 |      USER      |   Negativo    | Realizar login com senha inválida.         | POST   | /users/login              | 400    | Msg: size must be between 8 and 147483647.         |
+| CT-103 | CATEGORIES     |   Negativo    | Criar categoria já existente.                       | POST   | /categories/admin         | 403    | Msg: Já existe uma categoria com este nome.        |
 
 
 ### Cenários de testes a serem desenvolvidos nas próximas etapas:
 
 | ID     | Funcionalidade | Classificação | Cenário                                             | Método | Endpoint                  | Status | Resposta Esperada                                  | 
 |:-------|:---------------|:--------------|:----------------------------------------------------|:-------|:--------------------------|:-------|:---------------------------------------------------|
-| CT-103 | CATEGORIES     |   Negativo    | Criar categoria já existente.                       | POST   | /categories/admin         | 403    | Msg: Já existe uma categoria com este nome.        |
 | CT-104 | CATEGORIES     |   Negativo    | Deletar categoria inexistente.                      | DELETE | /categories/admin/id      | 404    | Msg: Impossível excluir: Categoria não encontrada. |
 | CT-105 | CATEGORIES     |   Negativo    | Deletar categoria com produto vinculado.            | DELETE | /categories/admin/id      | -      | A ser definido.                                    |
 | CT-106 | CATEGORIES     |   Negativo    | Alterar categoria para outra já existente.          | PUT    | /categories/admin/id      | 403    | -                                                  |

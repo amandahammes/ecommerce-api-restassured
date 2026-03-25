@@ -71,6 +71,12 @@ public class BaseTest {
                 .build();
     }
 
+    protected ResponseSpecification responseSpecCode404() {
+        return new ResponseSpecBuilder()
+                .expectStatusCode(404)
+                .build();
+    }
+
     protected ResponseSpecification responseSpecCode409() {
         return new ResponseSpecBuilder()
                 .expectStatusCode(409)

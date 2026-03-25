@@ -119,4 +119,17 @@ public class CategoryTest extends BaseTest {
                 .log().ifValidationFails()
                 .spec(responseSpecCode400());
     }
+
+    @Test
+    @DisplayName("Deve gerar mensagem de erro ao deletar Categoria inexistente")
+    public void shouldFailToDeleteNonExistingCategory(){
+        String token = userService.loginUserAdmin();
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .delete("/categories/admin/{id}", 100000)
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode404());
+    }
 }
