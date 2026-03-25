@@ -2,7 +2,9 @@ package br.com.ecommerce.test;
 
 import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.dto.CategoryDTO;
+import br.com.ecommerce.dto.ProductDTO;
 import br.com.ecommerce.service.CategoryService;
+import br.com.ecommerce.service.ProductService;
 import br.com.ecommerce.service.UserService;
 import br.com.ecommerce.test.base.BaseTest;
 import org.junit.jupiter.api.*;
@@ -16,6 +18,7 @@ public class CategoryTest extends BaseTest {
 
     private UserService userService = new UserService();
     private CategoryService categoryService = new CategoryService();
+    private ProductService productService = new ProductService();
     private DataFactory dataFactory = new DataFactory();
 
     @Test
@@ -130,6 +133,24 @@ public class CategoryTest extends BaseTest {
                 .delete("/categories/admin/{id}", 100000)
                 .then()
                 .log().ifValidationFails()
-                .spec(responseSpecCode404());
+                .spec(responseSpecCode404())
+                .body("message", equalTo("Impossível excluir: Categoria não encontrada."));
+    }
+
+    @Test
+    @DisplayName("Deve gerar mensagem de erro ao deletar Categoria com produto vinculado")
+    public void shouldFailToDeleteCategoryWithLinkedProduct() {
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        Long idCategory = category.getId();
+        ProductDTO produto = productService.createProduct(category.getId(), token);
+
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .delete("/categories/admin/{id}", idCategory)
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode409());
     }
 }
