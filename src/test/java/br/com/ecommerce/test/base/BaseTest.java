@@ -36,7 +36,7 @@ public class BaseTest {
     protected ResponseSpecification responseSpecCode200() {
         return new ResponseSpecBuilder()
                 .expectStatusCode(200)
-                .expectContentType(ContentType.JSON) // Verificar pq eu comentei essa linha
+                .expectContentType(ContentType.JSON)
                 .build();
     }
 
@@ -56,6 +56,12 @@ public class BaseTest {
     protected ResponseSpecification responseSpecCode204() {
         return new ResponseSpecBuilder()
                 .expectStatusCode(204)
+                .build();
+    }
+
+    protected ResponseSpecification responseSpecCode401() {
+        return new ResponseSpecBuilder()
+                .expectStatusCode(401)
                 .build();
     }
 
