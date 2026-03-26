@@ -145,7 +145,7 @@ public class ProductTest extends BaseTest {
                 .put("/admin/products/{id}", id)
                 .then()
                 .log().ifValidationFails()
-                .spec(responseSpecCode400());
+                .spec(responseSpecCode409());
     }
 
 }
