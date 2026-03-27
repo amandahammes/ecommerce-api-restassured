@@ -87,9 +87,7 @@ public class CartTest extends BaseTest {
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
         ProductDTO product1 = productService.createProduct(category.getId(), token);
-        ProductDTO product2 = productService.createProduct(category.getId(), token);
-        CartResponseDTO addCartItem1 = cartService.addItemToCart(product2.getId(), token);
-        CartResponseDTO addCartItem2 = cartService.addItemToCart(product1.getId(), token);
+        CartResponseDTO addCartItem1 = cartService.addItemToCart(product1.getId(), token);
 
         given()
                 .spec(requestSpec(token))
@@ -101,7 +99,7 @@ public class CartTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Deveria falhar ao acrescentar produto inativo no Carrinho")
+    @DisplayName("Deve falhar ao acrescentar produto inativo no Carrinho")
     public void shouldFailPostInactiveProductIntoCart(){
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
@@ -128,5 +126,29 @@ public class CartTest extends BaseTest {
                 .then()
                 .log().ifValidationFails()
                 .spec(responseSpecCode404());
+    }
+
+    @Test
+    @DisplayName("Deve falhar ao adicionar quantidade de produto maior que a disponível")
+    public void shouldReturnErrorWhenProductQuantityExceedsAvailable(){
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product = productService.createProduct(category.getId(), token);
+        Integer quantidade = product.getStockQuantity();
+
+        CartRequestDTO cartRequest = CartRequestDTO.builder()
+                .productId(product.getId())
+                .quantity(quantidade + 10)
+                .build();
+
+        given()
+                .spec(requestSpec(token))
+                .body(cartRequest)
+                .when()
+                .post("/cart/items")
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode400())
+                .body("message", equalTo("Estoque insuficiente"));
     }
 }
