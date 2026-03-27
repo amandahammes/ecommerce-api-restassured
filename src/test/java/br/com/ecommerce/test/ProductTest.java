@@ -3,8 +3,10 @@ package br.com.ecommerce.test;
 import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.dto.CategoryDTO;
 import br.com.ecommerce.dto.ProductDTO;
+import br.com.ecommerce.dto.UserDTO;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
+import br.com.ecommerce.service.UserService;
 import br.com.ecommerce.test.base.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class ProductTest extends BaseTest {
 
+    private UserService userService = new UserService();
     private CategoryService categoryService = new CategoryService();
     private ProductService productService = new ProductService();
     private DataFactory dataFactory = new DataFactory();
@@ -174,4 +177,16 @@ public class ProductTest extends BaseTest {
                 .spec(responseSpecCode401());
     }
 
+    @Test
+    @DisplayName("Deve falhar ao deletar Produto inexistente")
+    public void shouldFailDeleteNonExistingProduct() {
+        String token = userService.loginUserAdmin();
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .delete("/admin/products/{id}", 100000)
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode404());
+    }
 }
