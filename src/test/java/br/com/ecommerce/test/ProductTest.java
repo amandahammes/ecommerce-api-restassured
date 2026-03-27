@@ -3,8 +3,10 @@ package br.com.ecommerce.test;
 import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.dto.CategoryDTO;
 import br.com.ecommerce.dto.ProductDTO;
+import br.com.ecommerce.dto.UserDTO;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
+import br.com.ecommerce.service.UserService;
 import br.com.ecommerce.test.base.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class ProductTest extends BaseTest {
 
+    private UserService userService = new UserService();
     private CategoryService categoryService = new CategoryService();
     private ProductService productService = new ProductService();
     private DataFactory dataFactory = new DataFactory();
@@ -118,5 +121,72 @@ public class ProductTest extends BaseTest {
                 .body("size()", greaterThanOrEqualTo(2))
                 .body("content.id", hasItems(product1.getId().intValue(), product2.getId().intValue()))
                 .body("content.name", hasItems(product1.getName(), product2.getName()));
+    }
+
+    @Test
+    @DisplayName("Deve falhar ao alterar produto com nome de outro produto existente")
+    public void shouldFailToPutProductToExistingProductName() {
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product1 = productService.createProduct(category.getId(), token);
+        ProductDTO product2 = productService.createProduct(category.getId(), token);
+        Integer id = product2.getId().intValue();
+        ProductDTO productSameName = ProductDTO.builder()
+                .sku(product2.getSku())
+                .name(product1.getName())
+                .priceCents(product2.getPriceCents())
+                .categoryId(product2.getCategoryId())
+                .stockQuantity(product2.getStockQuantity())
+                .currency(product2.getCurrency())
+                .active(product2.isActive())
+                .build();
+
+        given()
+                .spec(requestSpec(token))
+                .body(productSameName)
+                .when()
+                .put("/admin/products/{id}", id)
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode409());
+    }
+
+    @Test
+    @DisplayName("Deve falhar ao criar produto com nome de produto já existente")
+    public void shouldFailToPostProductToExistingProductName() {
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product = productService.createProduct(category.getId(), token);
+        ProductDTO productSameName = ProductDTO.builder()
+                .sku(product.getSku() + 1)
+                .name(product.getName())
+                .priceCents(product.getPriceCents())
+                .categoryId(product.getCategoryId())
+                .stockQuantity(product.getStockQuantity())
+                .currency(product.getCurrency())
+                .active(product.isActive())
+                .build();
+
+        given()
+                .spec(requestSpec(token))
+                .body(productSameName)
+                .when()
+                .post("/admin/products")
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode401());
+    }
+
+    @Test
+    @DisplayName("Deve falhar ao deletar Produto inexistente")
+    public void shouldFailDeleteNonExistingProduct() {
+        String token = userService.loginUserAdmin();
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .delete("/admin/products/{id}", 100000)
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode404());
     }
 }

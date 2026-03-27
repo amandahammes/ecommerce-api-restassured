@@ -161,13 +161,10 @@ public class CategoryTest extends BaseTest {
         String token = categoryService.getToken();
         Long idCategory = category1.getId();
         CategoryDTO category2 = categoryService.createCategory();
-        System.out.println("Categoria 2" + category2);
-        System.out.println("Categoria 1" + category1);
         CategoryDTO categorySameName = CategoryDTO.builder()
                 .name(category2.getName())
                 .description(category1.getDescription())
                 .build();
-        System.out.println("Categoria alterada para PUT" + categorySameName);
         given()
                 .spec(requestSpec(token))
                 .body(categorySameName)
