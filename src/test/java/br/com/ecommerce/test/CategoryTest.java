@@ -174,5 +174,4 @@ public class CategoryTest extends BaseTest {
                 .log().ifValidationFails()
                 .spec(responseSpecCode409());
     }
-
 }

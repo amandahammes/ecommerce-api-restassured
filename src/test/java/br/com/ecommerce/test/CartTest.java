@@ -1,7 +1,7 @@
 package br.com.ecommerce.test;
 
 import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.dto.request.CartRequest;
+import br.com.ecommerce.dto.request.CartRequestDTO;
 import br.com.ecommerce.dto.CategoryDTO;
 import br.com.ecommerce.dto.ProductDTO;
 import br.com.ecommerce.dto.response.CartResponseDTO;
@@ -27,7 +27,7 @@ public class CartTest extends BaseTest {
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
         ProductDTO product = productService.createProduct(category.getId(), token);
-        CartRequest addCartItem = DataFactory.createCartItem(product.getId());
+        CartRequestDTO addCartItem = DataFactory.createCartItem(product.getId());
 
         given()
                 .spec(requestSpec(token))
@@ -98,5 +98,35 @@ public class CartTest extends BaseTest {
                 .then()
                 .log().ifValidationFails()
                 .spec(responseSpecCode204());
+    }
+
+    @Test
+    @DisplayName("Deveria falhar ao acrescentar produto inativo no Carrinho")
+    public void shouldFailPostInactiveProductIntoCart(){
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product = productService.createProduct(category.getId(), token);
+        product.setActive(false);
+
+        given()
+                .spec(requestSpec(token))
+                .body(product)
+                .when()
+                .put("/admin/products/{id}", product.getId())
+                .then()
+                .statusCode(200);
+
+        CartRequestDTO cartRequest = CartRequestDTO.builder()
+                .productId(product.getId())
+                .quantity(10)
+                .build();
+        given()
+                .spec(requestSpec(token))
+                .body(cartRequest)
+                .when()
+                .post("/cart/items")
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode404());
     }
 }

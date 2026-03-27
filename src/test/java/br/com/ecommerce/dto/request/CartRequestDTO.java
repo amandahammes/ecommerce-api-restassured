@@ -11,7 +11,7 @@ import lombok.Builder;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CartRequest {
+public class CartRequestDTO {
     private Long productId;
     private Integer quantity;
 }

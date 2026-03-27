@@ -1,6 +1,6 @@
 package br.com.ecommerce.dataFactory;
 
-import br.com.ecommerce.dto.request.CartRequest;
+import br.com.ecommerce.dto.request.CartRequestDTO;
 import br.com.ecommerce.dto.CategoryDTO;
 import br.com.ecommerce.dto.ProductDTO;
 import br.com.ecommerce.dto.UserDTO;
@@ -47,8 +47,8 @@ public class DataFactory {
         return faker.commerce().department();
     }
 
-    public static CartRequest createCartItem(Long productId) {
-        return CartRequest.builder()
+    public static CartRequestDTO createCartItem(Long productId) {
+        return CartRequestDTO.builder()
             .productId(productId)
             .quantity(faker.number().numberBetween(1, 2))
             .build();
