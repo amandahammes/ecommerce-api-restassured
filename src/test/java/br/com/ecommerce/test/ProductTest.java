@@ -121,7 +121,7 @@ public class ProductTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Deve ter sucesso ao pegar lista de Produtos com informações válidas")
+    @DisplayName("Deve falhar ao alterar produto com nome de outro produto existente")
     public void shouldFailToPutProductToExistingProductName() {
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
@@ -146,6 +146,32 @@ public class ProductTest extends BaseTest {
                 .then()
                 .log().ifValidationFails()
                 .spec(responseSpecCode409());
+    }
+
+    @Test
+    @DisplayName("Deve falhar ao criar produto com nome de produto já existente")
+    public void shouldFailToPostProductToExistingProductName() {
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product = productService.createProduct(category.getId(), token);
+        ProductDTO productSameName = ProductDTO.builder()
+                .sku(product.getSku() + 1)
+                .name(product.getName())
+                .priceCents(product.getPriceCents())
+                .categoryId(product.getCategoryId())
+                .stockQuantity(product.getStockQuantity())
+                .currency(product.getCurrency())
+                .active(product.isActive())
+                .build();
+
+        given()
+                .spec(requestSpec(token))
+                .body(productSameName)
+                .when()
+                .post("/admin/products")
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode401());
     }
 
 }

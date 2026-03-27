@@ -118,6 +118,7 @@ Como a API ainda está em processo de desenvolvimento e ajustes estão sendo rea
 [CT-102](https://github.com/renansalves/E-Commerce-API/issues/5) <br>
 [CT-105](https://github.com/renansalves/E-Commerce-API/issues/6) <br>
 [CT-106](https://github.com/renansalves/E-Commerce-API/issues/7) <br>
+[CT-107](https://github.com/renansalves/E-Commerce-API/issues/9) <br>
 [CT-109](https://github.com/renansalves/E-Commerce-API/issues/8) <br>
 
 * Projeto desenvolvido por [Amanda Kopper Hammes](https://github.com/amandahammes) entre janeiro e março de 2026.
