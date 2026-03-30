@@ -117,4 +117,25 @@ public class OrderTest extends BaseTest {
                 .spec(responseSpecCode404())
                 .body("message", equalTo("Carrinho não encontrado para este usuário"));
     }
+
+    @Test
+    @DisplayName("Deve falhar ao alterar status do pedido para valor inexistente")
+    public void shouldFailToPatchCheckoutInvalidStatus(){
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product = productService.createProduct(category.getId(), token);
+        CartResponseDTO addCartItem = cartService.addItemToCart(product.getId(), token);
+        OrderResponseDTO checkout = orderService.makingCheckout(token);
+        Integer idCheckout = checkout.getId().intValue();
+
+        given()
+                .spec(requestSpec(token))
+                .queryParam("status", "SHIPPEDED")
+                .when()
+                .patch("/orders/admin/{id}/status", idCheckout)
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode404())
+                .body("message", equalTo("Status inexistente."));
+    }
 }
