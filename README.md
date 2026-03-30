@@ -48,18 +48,11 @@ O objetivo final é garantir que as operações CRUD de `produto`, `categoria`, 
 | CT-107 | PRODUCTS   | Negativo | Criar produto já existente.                          | POST   | /admin/products           | 403    | -                                                  |
 | CT-108 | PRODUCTS   | Negativo | Deletar produto inexistente.                         | DELETE | /admin/products/id        | 404    | Msg: Produto não encontrado.                       |
 | CT-109 | PRODUCTS   | Negativo | Alterar produto para outro já existente.             | PUT    | /admin/products/id        | -      | A ser definido.                                    |
+| CT-110 | ORDERS     | Negativo | Finalizar checkout carrinho inexistente.             | POST   | /orders/checkout          | 404    | Msg: Carrinho não encontrado para este usuário.    |
+| CT-111 | ORDERS     | Negativo | Atualizar status com valor inexistente.              | PATCH  | /orders/admin/{id}/status | 404    | Msg: Carrinho não encontrado para este usuário.    |
 | CT-112 | CART       | Negativo | Adicionar produto inativo no carrinho.               | POST   | /cart/items               | 404    | Msg: Produto não encontrado ou inativo.            |
 | CT-113 | CART       | Negativo | Adicionar + produto do que o disponível no carrinho. | POST   | /cart/items               | 400    | Msg: Estoque insuficiente.                         |
-| CT-114 | CART       | Negativo | Deletar carrinho com Checkout finalizado.            | DELETE | /cart                     | -      | A ser definido.                                    |
-| CT-115 | CART       | Negativo | Deletar item do carrinho com Checkout finalizado.    | DELETE | /cart/items/id            | 404    | Msg: Carrinho vazio ou não encontrado.             |
 
-
-### Cenários de testes a serem desenvolvidos nas próximas etapas:
-
-| ID     | Funcionalidade | Classificação | Cenário                                              | Método | Endpoint                  | Status | Resposta Esperada                                  | 
-|:-------|:---------------|:--------------|:-----------------------------------------------------|:-------|:--------------------------|:-------|:---------------------------------------------------|
-| CT-110 | ORDERS         |   Negativo    | Finalizar checkout carrinho inexistente.             | POST   | /orders/checkout          | 404    | Msg: Carrinho não encontrado para este usuário.    |
-| CT-111 | ORDERS         |   Negativo    | Atualizar status com valor inexistente.              | PATCH  | /orders/admin/{id}/status | 404    | Msg: Carrinho não encontrado para este usuário.    |
 
 ## Ferramentas e Tecnologias Utilizadas
 
