@@ -2,6 +2,7 @@ package br.com.ecommerce.service;
 
 import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.dto.CategoryDTO;
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import lombok.Getter;
 
@@ -13,7 +14,7 @@ public class CategoryService {
     private DataFactory dataFactory = new DataFactory();
     @Getter
     private String token;
-
+    @Step("Criando uma categoria de teste na API")
     public CategoryDTO createCategory(){
         token = userService.loginUserAdmin();
         CategoryDTO newCategory = dataFactory.createRandomCategory();

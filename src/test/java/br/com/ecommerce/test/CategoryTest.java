@@ -7,6 +7,8 @@ import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
 import br.com.ecommerce.service.UserService;
 import br.com.ecommerce.test.base.BaseTest;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.*;
 
 import static br.com.ecommerce.dataFactory.DataFactory.faker;
@@ -14,6 +16,8 @@ import static org.hamcrest.Matchers.*;
 
 import static io.restassured.RestAssured.given;
 
+@Epic("Gestão de Ecommerce")
+@Feature("Fluxo de Categorias")
 public class CategoryTest extends BaseTest {
 
     private UserService userService = new UserService();

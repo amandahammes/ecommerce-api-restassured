@@ -5,16 +5,23 @@ import br.com.ecommerce.dto.UserDTO;
 import br.com.ecommerce.service.UserService;
 import br.com.ecommerce.test.base.BaseTest;
 import static org.hamcrest.Matchers.*;
+
+import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.*;
 
+@Epic("Gestão de Ecommerce")
+@Feature("Fluxo de Usuários")
 public class UserTest extends BaseTest {
 
     private UserService userService = new UserService();
     private DataFactory dataFactory = new DataFactory();
 
     @Test
+    @Story("Login de Usuário")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Valida a segurança do registro de usuário")
     @DisplayName("Deve ter sucesso ao criar Usuário com credenciais válidas")
     public void shouldCreateUserSuccessfullyWithValidCredentials(){
         UserDTO randomUser = DataFactory.createRandomUser();
@@ -28,6 +35,9 @@ public class UserTest extends BaseTest {
     }
 
     @Test
+    @Story("Login de Usuário")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Valida a segurança do login ao tentar acessar com senha correta")
     @DisplayName("Deve ter sucesso ao realizar login do Usuário com credenciais válidas")
     public void shouldLoginUserSuccessfullyWithValidCredentials(){
         UserDTO userLogin = userService.createUser();
@@ -46,6 +56,9 @@ public class UserTest extends BaseTest {
     }
 
     @Test
+    @Story("Login de Usuário")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Valida a segurança do login ao tentar acessar com e-mail já existente")
     @DisplayName("Deve gerar mensagem de erro ao realizar cadastro com e-mail já existente")
     public void shouldFailToRegisterUserWithExistingEmail(){
         UserDTO userLogin = userService.createUser();
@@ -62,6 +75,9 @@ public class UserTest extends BaseTest {
     }
 
     @Test
+    @Story("Login de Usuário")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Valida a segurança do login ao tentar acessar com senha incorreta")
     @DisplayName("Deve gerar mensagem de erro ao realizar login com senha inválida")
     public void shouldFailToLoginUserWithInvalidPassword(){
         UserDTO userLogin = userService.createUser();

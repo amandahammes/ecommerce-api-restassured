@@ -66,10 +66,10 @@ Este projeto utiliza a stack de automação Java com as seguintes tecnologias:
     - Hamcrest: Biblioteca de matchers que permite criar regras de verificação (assertions) mais legíveis.
     - Jackson Databind: Responsável pela serialização e desserialização de objetos Java para JSON e vice-versa. 
     - Jackson Datatype: Módulo complementar que permite ao Jackson serializar e desserializar tipos modernos do Java, como datas (LocalDate) e horários.
+    - Allure: cria arquivos .txt e .json com os dados sobre os testes rodados.
 
-A ser implementado:
-
-- Allure: cria arquivos .txt e .json com os dados sobre os testes rodados.
+Comando para ver Relatório em gráficos:
+& "C:\allure-2.38.1\allure-2.38.1\bin\allure.bat" open allure-report
 
 
 ## Ambiente

@@ -9,12 +9,16 @@ import br.com.ecommerce.service.CartService;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
 import br.com.ecommerce.test.base.BaseTest;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
+@Epic("Gestão de Ecommerce")
+@Feature("Fluxo de Carrinho")
 public class CartTest extends BaseTest {
 
     private CategoryService categoryService = new CategoryService();

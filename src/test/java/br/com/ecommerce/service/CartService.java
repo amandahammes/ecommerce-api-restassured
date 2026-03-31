@@ -3,11 +3,13 @@ package br.com.ecommerce.service;
 import br.com.ecommerce.dataFactory.DataFactory;
 import br.com.ecommerce.dto.request.CartRequestDTO;
 import br.com.ecommerce.dto.response.CartResponseDTO;
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.given;
 
 public class CartService {
+    @Step("Adicionando item no carrinho de teste na API")
     public CartResponseDTO addItemToCart(Long productId, String token) {
         CartRequestDTO addCartItem = DataFactory.createCartItem(productId);
         return given()

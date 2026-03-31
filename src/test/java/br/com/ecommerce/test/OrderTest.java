@@ -6,12 +6,16 @@ import br.com.ecommerce.dto.ProductDTO;
 import br.com.ecommerce.dto.response.CartResponseDTO;
 import br.com.ecommerce.service.*;
 import br.com.ecommerce.test.base.BaseTest;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
+@Epic("Gestão de Ecommerce")
+@Feature("Fluxo de Orders")
 public class OrderTest extends BaseTest {
 
     private UserService userService = new UserService();

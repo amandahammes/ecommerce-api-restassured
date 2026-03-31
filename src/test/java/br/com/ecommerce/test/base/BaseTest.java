@@ -1,6 +1,7 @@
 package br.com.ecommerce.test.base;
 
 import br.com.ecommerce.util.ConfigLoader;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -20,6 +21,7 @@ public class BaseTest {
 
     protected RequestSpecification requestSpec(String token) {
         return new RequestSpecBuilder()
+                .addFilter(new AllureRestAssured())
                 .addHeader("Authorization", "Bearer " + token)
                 .setContentType(ContentType.JSON)
                 .setAccept(ContentType.JSON)
