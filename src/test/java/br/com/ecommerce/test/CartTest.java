@@ -9,8 +9,7 @@ import br.com.ecommerce.service.CartService;
 import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
 import br.com.ecommerce.test.base.BaseTest;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,6 +25,9 @@ public class CartTest extends BaseTest {
     private CartService cartService = new CartService();
 
     @Test
+    @Story("Adicionar item ao carrinho")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-017: Valida a inserção de produto existente com quantidade válida")
     @DisplayName("Deve ter sucesso ao adicionar item ao carrinho")
     public void shouldAddProductToCartSuccessfully(){
         CategoryDTO category = categoryService.createCategory();
@@ -48,6 +50,9 @@ public class CartTest extends BaseTest {
     }
 
     @Test
+    @Story("Listar carrinho usuário")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-018: Valida informações corretas ao buscar carrinho do usuário")
     @DisplayName("Deve ter sucesso ao pegar informações do carrinho")
     public void shouldGetCartSuccessfully(){
         CategoryDTO category = categoryService.createCategory();
@@ -69,6 +74,9 @@ public class CartTest extends BaseTest {
     }
 
     @Test
+    @Story("Deletar carrinho")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-019: Valida a exclusão de carrinho do usuário com sucesso")
     @DisplayName("Deve ter sucesso ao deletar carrinho")
     public void shouldDeleteCartSuccessfully(){
         CategoryDTO category = categoryService.createCategory();
@@ -86,6 +94,9 @@ public class CartTest extends BaseTest {
     }
 
     @Test
+    @Story("Deletar item do carrinho por id")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-020: Valida a exclusão de item do carrinho com sucesso")
     @DisplayName("Deve ter sucesso ao deletar item do carrinho")
     public void shouldDeleteItemCartSuccessfully(){
         CategoryDTO category = categoryService.createCategory();
@@ -103,7 +114,10 @@ public class CartTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Deve falhar ao acrescentar produto inativo no Carrinho")
+    @Story("Inserir item no carrinho")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-112: Valida erro ao acrescentar produto inativo no carrinho")
+    @DisplayName("Deve falhar ao acrescentar produto inativo no carrinho")
     public void shouldFailPostInactiveProductIntoCart(){
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
@@ -133,6 +147,9 @@ public class CartTest extends BaseTest {
     }
 
     @Test
+    @Story("Inserir produto no carrinho")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-113: Valida erro ao adicionar quantidade de produto maior que a disponível")
     @DisplayName("Deve falhar ao adicionar quantidade de produto maior que a disponível")
     public void shouldReturnErrorWhenProductQuantityExceedsAvailable(){
         CategoryDTO category = categoryService.createCategory();

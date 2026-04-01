@@ -6,8 +6,7 @@ import br.com.ecommerce.dto.ProductDTO;
 import br.com.ecommerce.dto.response.CartResponseDTO;
 import br.com.ecommerce.service.*;
 import br.com.ecommerce.test.base.BaseTest;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +23,10 @@ public class OrderTest extends BaseTest {
     private CartService cartService = new CartService();
     private OrderService orderService = new OrderService();
 
-    @Test
-    @DisplayName("Deve finalizar checkout com sucesso.")
+    @Test @Story("Checkout Order")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-013: Valida a integridade do checkout")
+    @DisplayName("Deve realizar checkout com sucesso.")
     public void shouldFinishCheckoutSuccessfully(){
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
@@ -47,6 +48,9 @@ public class OrderTest extends BaseTest {
     }
 
     @Test
+    @Story("Checkout Order")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-014: Valida alteração do status do pedido")
     @DisplayName("Deve alterar o status do pedido para um valor válido")
     public void shouldPatchOrderStatusSuccessfully(){
         CategoryDTO category = categoryService.createCategory();
@@ -67,6 +71,9 @@ public class OrderTest extends BaseTest {
     }
 
     @Test
+    @Story("Checkout Order")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-015: Valida a listagem de todos os itens do pedido")
     @DisplayName("Deve listar todos os pedidos do usuário com sucesso.")
     public void shouldGetAllOrdersSuccessfully(){
         CategoryDTO category = categoryService.createCategory();
@@ -89,7 +96,10 @@ public class OrderTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Deve listar pedido do usuário por ID com sucesso.")
+    @Story("Checkout Order")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-016: Valida mostrar pedido por id")
+    @DisplayName("Deve listar pedido do usuário por id com sucesso.")
     public void shouldGetOrderByIdSuccessfully(){
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
@@ -109,6 +119,9 @@ public class OrderTest extends BaseTest {
     }
 
     @Test
+    @Story("Checkout Order")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-110: Valida falha ao realizar checkout com carrinho vazio")
     @DisplayName("Deve falhar ao fazer checkout sem carrinho")
     public void shouldFailFinishCheckoutEmptyCart(){
         String token = userService.loginUserAdmin();
@@ -123,6 +136,9 @@ public class OrderTest extends BaseTest {
     }
 
     @Test
+    @Story("Checkout Order")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-111: Valida falha ao alterar status para valor inexistente")
     @DisplayName("Deve falhar ao alterar status do pedido para valor inexistente")
     public void shouldFailToPatchCheckoutInvalidStatus(){
         CategoryDTO category = categoryService.createCategory();

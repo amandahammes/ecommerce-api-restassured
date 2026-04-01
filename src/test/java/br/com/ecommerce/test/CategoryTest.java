@@ -7,8 +7,7 @@ import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
 import br.com.ecommerce.service.UserService;
 import br.com.ecommerce.test.base.BaseTest;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 
 import static br.com.ecommerce.dataFactory.DataFactory.faker;
@@ -26,6 +25,9 @@ public class CategoryTest extends BaseTest {
     private DataFactory dataFactory = new DataFactory();
 
     @Test
+    @Story("Criar categoria")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-003: Valida a criação de categoria com informações obrigatórias e válidas")
     @DisplayName("Deve ter sucesso ao criar Categoria com informações válidas")
     public void shouldCreateCategorySuccessfullyWithValidInformation(){
         CategoryDTO newCategory = DataFactory.createRandomCategory();
@@ -42,22 +44,11 @@ public class CategoryTest extends BaseTest {
                 .body("name", equalTo(newCategory.getName()))
                 .body("description", equalTo(newCategory.getDescription()));
     }
+
     @Test
-    @DisplayName("Deve ter sucesso ao pegar Categoria com informações válidas")
-    public void shouldGetCategorySuccessfullyWithValidInformation() {
-        CategoryDTO category = categoryService.createCategory();
-        String token = categoryService.getToken();
-        given()
-                .spec(requestSpec(token))
-                .when()
-                .get("/categories/{id}", category.getId())
-                .then()
-                .spec(responseSpecCode200())
-                .body("id", equalTo(category.getId().intValue()))
-                .body("name", equalTo(category.getName()))
-                .body("description", equalTo(category.getDescription()));
-    }
-    @Test
+    @Story("Alterar categoria")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-004: Valida alteração de informações de categoria já existente")
     @DisplayName("Deve ter sucesso ao alterar Categoria com informações válidas")
     public void shouldPutCategorySuccessfullyWithValidInformation() {
         CategoryDTO category = categoryService.createCategory();
@@ -77,6 +68,9 @@ public class CategoryTest extends BaseTest {
     }
 
     @Test
+    @Story("Deletar categoria")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-005: Valida se categoria foi deletada")
     @DisplayName("Deve ter sucesso ao deletar Categoria")
     public void shouldDeleteCategorySuccessfullyWithValidInformation() {
         CategoryDTO category = categoryService.createCategory();
@@ -91,6 +85,9 @@ public class CategoryTest extends BaseTest {
     }
 
     @Test
+    @Story("Listar categorias")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-006: Valida a listagem das categorias e suas informações")
     @DisplayName("Deve ter sucesso ao pegar Categoria com informações válidas")
     public void shouldGetAllCategoriesSuccessfullyWithValidInformation() {
         CategoryDTO category1 = categoryService.createCategory();
@@ -109,7 +106,29 @@ public class CategoryTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Deve gerar mensagem de erro ao criar Categoria nome de categoria já existente")
+    @Story("Mostrar categoria por id")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-007: Valida listar informações de categoria por id")
+    @DisplayName("Deve ter sucesso ao pegar Categoria com informações válidas")
+    public void shouldGetCategorySuccessfullyWithValidInformation() {
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        given()
+                .spec(requestSpec(token))
+                .when()
+                .get("/categories/{id}", category.getId())
+                .then()
+                .spec(responseSpecCode200())
+                .body("id", equalTo(category.getId().intValue()))
+                .body("name", equalTo(category.getName()))
+                .body("description", equalTo(category.getDescription()));
+    }
+
+    @Test
+    @Story("Criar categoria")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-103: Valida a integridade da categoria ao tentar criar categoria com nome de categoria existente")
+    @DisplayName("Deve gerar mensagem de erro ao criar categoria com nome de categoria já existente")
     public void shouldFailToCreateCategoryWithExistingCategoryName(){
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
@@ -128,6 +147,9 @@ public class CategoryTest extends BaseTest {
     }
 
     @Test
+    @Story("Deletar Categoria")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-104: Valida a a consistencia das regras ao deletar categoria inexistente")
     @DisplayName("Deve gerar mensagem de erro ao deletar Categoria inexistente")
     public void shouldFailToDeleteNonExistingCategory(){
         String token = userService.loginUserAdmin();
@@ -142,6 +164,9 @@ public class CategoryTest extends BaseTest {
     }
 
     @Test
+    @Story("Deletar Categoria")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-105: Valida a integridade do sistema ao tentar deletar categoria com produto vinculado")
     @DisplayName("Deve gerar mensagem de erro ao deletar Categoria com produto vinculado")
     public void shouldFailToDeleteCategoryWithLinkedProduct() {
         CategoryDTO category = categoryService.createCategory();
@@ -159,6 +184,9 @@ public class CategoryTest extends BaseTest {
     }
 
     @Test
+    @Story("Alterar Categoria")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-106: Valida a integridade do sistema ao alterar nome da categoria para outro já existente")
     @DisplayName("Deve gerar mensagem de erro ao alterar nome da Categoria para uma já existente")
     public void shouldFailToPutCategoryToExistingCategoryName() {
         CategoryDTO category1 = categoryService.createCategory();

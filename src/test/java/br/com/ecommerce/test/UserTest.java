@@ -21,8 +21,8 @@ public class UserTest extends BaseTest {
     @Test
     @Story("Login de Usuário")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Valida a segurança do registro de usuário")
-    @DisplayName("Deve ter sucesso ao criar Usuário com credenciais válidas")
+    @Description("CT-001: Valida a segurança do registro de usuário")
+    @DisplayName("Deve ter sucesso ao criar usuário com credenciais válidas")
     public void shouldCreateUserSuccessfullyWithValidCredentials(){
         UserDTO randomUser = DataFactory.createRandomUser();
         given()
@@ -37,7 +37,7 @@ public class UserTest extends BaseTest {
     @Test
     @Story("Login de Usuário")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Valida a segurança do login ao tentar acessar com senha correta")
+    @Description("CT-002: Valida a segurança do login ao tentar acessar com senha correta")
     @DisplayName("Deve ter sucesso ao realizar login do Usuário com credenciais válidas")
     public void shouldLoginUserSuccessfullyWithValidCredentials(){
         UserDTO userLogin = userService.createUser();
@@ -58,7 +58,7 @@ public class UserTest extends BaseTest {
     @Test
     @Story("Login de Usuário")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Valida a segurança do login ao tentar acessar com e-mail já existente")
+    @Description("CT-101: Valida a segurança do login ao tentar acessar com e-mail já existente")
     @DisplayName("Deve gerar mensagem de erro ao realizar cadastro com e-mail já existente")
     public void shouldFailToRegisterUserWithExistingEmail(){
         UserDTO userLogin = userService.createUser();
@@ -77,7 +77,7 @@ public class UserTest extends BaseTest {
     @Test
     @Story("Login de Usuário")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Valida a segurança do login ao tentar acessar com senha incorreta")
+    @Description("CT-102: Valida a segurança do login ao tentar acessar com senha incorreta")
     @DisplayName("Deve gerar mensagem de erro ao realizar login com senha inválida")
     public void shouldFailToLoginUserWithInvalidPassword(){
         UserDTO userLogin = userService.createUser();

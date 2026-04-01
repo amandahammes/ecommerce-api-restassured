@@ -8,8 +8,7 @@ import br.com.ecommerce.service.CategoryService;
 import br.com.ecommerce.service.ProductService;
 import br.com.ecommerce.service.UserService;
 import br.com.ecommerce.test.base.BaseTest;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +26,9 @@ public class ProductTest extends BaseTest {
     private DataFactory dataFactory = new DataFactory();
 
     @Test
+    @Story("Criar produto")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-008: Valida a criação de produto com informações obrigatórias e válidas")
     @DisplayName("Deve ter sucesso ao criar Produto com informações válidas")
     public void shouldCreateProductSuccessfullyWithValidInformation(){
         CategoryDTO newCategory = categoryService.createCategory();
@@ -48,28 +50,10 @@ public class ProductTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Deve ter sucesso ao pegar/listar Produto com informações válidas")
-    public void shouldGetProductSuccessfullyWithValidInformation(){
-        CategoryDTO newCategory = categoryService.createCategory();
-        String token = categoryService.getToken();
-        Long categoryId = newCategory.getId();
-        ProductDTO newProduct = productService.createProduct(categoryId, token);
-
-        given()
-                .spec(requestSpec(token))
-                .when()
-                .get("/products/{id}", newProduct.getId())
-                .then()
-                .log().ifValidationFails()
-                .spec(responseSpecCode200())
-                .body("sku", notNullValue())
-                .body("sku", equalTo(newProduct.getSku()))
-                .body("categoryId", equalTo(categoryId.intValue()))
-                .body("priceCents", equalTo(newProduct.getPriceCents().intValue()))
-                .body("stockQuantity", equalTo(newProduct.getStockQuantity()));
-    }
-    @Test
-    @DisplayName("Deve ter sucesso ao alterar Produto com informações válidas")
+    @Story("Alterar produto")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-009: Valida a alteração de produto com informações obrigatórias e válidas")
+    @DisplayName("Deve ter sucesso ao atualizar produto com informações válidas")
     public void shouldPutProductSuccessfullyWithValidInformation(){
         CategoryDTO newCategory = categoryService.createCategory();
         String token = categoryService.getToken();
@@ -91,8 +75,10 @@ public class ProductTest extends BaseTest {
                 .body("priceCents", equalTo(newProduct.getPriceCents().intValue()))
                 .body("stockQuantity", equalTo(newProduct.getStockQuantity()));
     }
-
     @Test
+    @Story("Deletar produto")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-010: Valida a exclusão de produto existente.")
     @DisplayName("Deve ter sucesso ao deletar Produto")
     public void shouldDeleteProductSuccessfullyWithValidInformation() {
         CategoryDTO newCategory = categoryService.createCategory();
@@ -109,7 +95,10 @@ public class ProductTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Deve ter sucesso ao pegar lista de Produtos com informações válidas")
+    @Story("Listar todos os produtos")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-011: Valida a listagem de produtos e suas informações")
+    @DisplayName("Deve ter sucesso ao pegar lista de produtos com informações válidas")
     public void shouldGetAllProductsSuccessfullyWithValidInformation() {
         CategoryDTO category = categoryService.createCategory();
         String token = categoryService.getToken();
@@ -128,34 +117,34 @@ public class ProductTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Deve falhar ao alterar produto com nome de outro produto existente")
-    public void shouldFailToPutProductToExistingProductName() {
-        CategoryDTO category = categoryService.createCategory();
+    @Story("Mostrar produto por id")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-012: Valida mostrar produto por id com informações válidas")
+    @DisplayName("Deve ter sucesso ao pegar/listar produto com informações válidas")
+    public void shouldGetProductSuccessfullyWithValidInformation(){
+        CategoryDTO newCategory = categoryService.createCategory();
         String token = categoryService.getToken();
-        ProductDTO product1 = productService.createProduct(category.getId(), token);
-        ProductDTO product2 = productService.createProduct(category.getId(), token);
-        Integer id = product2.getId().intValue();
-        ProductDTO productSameName = ProductDTO.builder()
-                .sku(product2.getSku())
-                .name(product1.getName())
-                .priceCents(product2.getPriceCents())
-                .categoryId(product2.getCategoryId())
-                .stockQuantity(product2.getStockQuantity())
-                .currency(product2.getCurrency())
-                .active(product2.isActive())
-                .build();
+        Long categoryId = newCategory.getId();
+        ProductDTO newProduct = productService.createProduct(categoryId, token);
 
         given()
                 .spec(requestSpec(token))
-                .body(productSameName)
                 .when()
-                .put("/admin/products/{id}", id)
+                .get("/products/{id}", newProduct.getId())
                 .then()
                 .log().ifValidationFails()
-                .spec(responseSpecCode409());
+                .spec(responseSpecCode200())
+                .body("sku", notNullValue())
+                .body("sku", equalTo(newProduct.getSku()))
+                .body("categoryId", equalTo(categoryId.intValue()))
+                .body("priceCents", equalTo(newProduct.getPriceCents().intValue()))
+                .body("stockQuantity", equalTo(newProduct.getStockQuantity()));
     }
 
     @Test
+    @Story("Criar produto")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-107: Valida o bloqueio da criação de produto com nome já existente")
     @DisplayName("Deve falhar ao criar produto com nome de produto já existente")
     public void shouldFailToPostProductToExistingProductName() {
         CategoryDTO category = categoryService.createCategory();
@@ -182,7 +171,10 @@ public class ProductTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Deve falhar ao deletar Produto inexistente")
+    @Story("Deletar produto")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-108: Valida mensagem de erro ao deletar produto inexistente")
+    @DisplayName("Deve falhar ao deletar produto inexistente")
     public void shouldFailDeleteNonExistingProduct() {
         String token = userService.loginUserAdmin();
         given()
@@ -192,5 +184,36 @@ public class ProductTest extends BaseTest {
                 .then()
                 .log().ifValidationFails()
                 .spec(responseSpecCode404());
+    }
+
+    @Test
+    @Story("Alterar produto")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("CT-109: Valida o bloqueio ao alterar produto com nome já existente")
+    @DisplayName("Deve falhar ao alterar produto com nome de outro produto existente")
+    public void shouldFailToPutProductToExistingProductName() {
+        CategoryDTO category = categoryService.createCategory();
+        String token = categoryService.getToken();
+        ProductDTO product1 = productService.createProduct(category.getId(), token);
+        ProductDTO product2 = productService.createProduct(category.getId(), token);
+        Integer id = product2.getId().intValue();
+        ProductDTO productSameName = ProductDTO.builder()
+                .sku(product2.getSku())
+                .name(product1.getName())
+                .priceCents(product2.getPriceCents())
+                .categoryId(product2.getCategoryId())
+                .stockQuantity(product2.getStockQuantity())
+                .currency(product2.getCurrency())
+                .active(product2.isActive())
+                .build();
+
+        given()
+                .spec(requestSpec(token))
+                .body(productSameName)
+                .when()
+                .put("/admin/products/{id}", id)
+                .then()
+                .log().ifValidationFails()
+                .spec(responseSpecCode409());
     }
 }
