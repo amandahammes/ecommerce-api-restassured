@@ -1,15 +1,17 @@
 package br.com.ecommerce.service;
 
 import br.com.ecommerce.dataFactory.DataFactory;
-import br.com.ecommerce.model.User;
+import br.com.ecommerce.dto.UserDTO;
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.given;
 
 public class UserService {
 
-public static User createUser(){
-        User randomUser = DataFactory.createRandomUser();
+    @Step("Criando um usuário de teste na API")
+    public UserDTO createUser(){
+        UserDTO randomUser = DataFactory.createRandomUser();
         given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
@@ -17,17 +19,18 @@ public static User createUser(){
                 .when()
                 .post("/users/register")
                 .then()
+                .log().ifValidationFails()
                 .statusCode(201);
         return randomUser;
     }
 
-    public static String loginUserAdmin() {
-        User userLogin = createUser();
-        User loginCredentials = new User(userLogin.getEmail(), userLogin.getPassword());
+    @Step("Realizando login com um usuário de teste na API")
+    public String loginUserAdmin() {
+        UserDTO userLogin = createUser();
         return given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .body(loginCredentials)
+                .body(userLogin)
                 .when()
                 .post("/users/login")
                 .then()

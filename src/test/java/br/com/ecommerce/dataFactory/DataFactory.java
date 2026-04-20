@@ -1,74 +1,56 @@
 package br.com.ecommerce.dataFactory;
 
-import br.com.ecommerce.model.Cart;
-import br.com.ecommerce.model.Category;
-import br.com.ecommerce.model.Product;
-import br.com.ecommerce.model.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import br.com.ecommerce.dto.request.CartRequestDTO;
+import br.com.ecommerce.dto.CategoryDTO;
+import br.com.ecommerce.dto.ProductDTO;
+import br.com.ecommerce.dto.UserDTO;
 import com.github.javafaker.Faker;
 
-import java.io.File;
-import java.io.IOException;
 
 public class DataFactory {
 
-    private static final Faker faker = new Faker();
+    public static Faker faker = new Faker();
 
-    public static User createRandomUser() {
-        return new User(
-                faker.internet().emailAddress(),
-                faker.internet().password(8,15,true,true),
-                "ADMIN"
-        );
+    public static UserDTO createRandomUser() {
+        return UserDTO.builder()
+                .name(faker.name().firstName())
+                .email(faker.internet().emailAddress())
+                .password(faker.internet().password(8,15,true,true))
+                .role("ADMIN")
+                .build();
     }
 
-    public static Category createRandomCategory() {
-        return new Category(
-                faker.commerce().department(),
-                faker.lorem().sentence(5)
-        );
+    public static CategoryDTO createRandomCategory() {
+        return CategoryDTO.builder()
+                .name(faker.commerce().department()+ " " + faker.number().digits(4))
+                .description(faker.lorem().sentence(5))
+                .build();
     }
 
-    public static Product createRandomProduct(Integer categoryId) {
-        return new Product(
-                faker.number().digits(5),
-                faker.commerce().productName(),
-                categoryId,
-                faker.number().numberBetween(1000, 10000),
-                "R$",
-                true,
-                200
-        );
+    public static String createRandomProductName() {
+        return faker.commerce().productName();
     }
 
-    public static Cart createCartItem(Integer productId) {
-        return new Cart(
-            productId,
-            faker.number().numberBetween(1, 5)
-        );
+    public static ProductDTO createRandomProduct(Long categoryId) {
+        return ProductDTO.builder()
+                .sku(faker.number().digits(5))
+                .name(faker.commerce().productName())
+                .categoryId(categoryId)
+                .priceCents(faker.number().numberBetween(100L, 10000L))
+                .currency("R$")
+                .active(true)
+                .stockQuantity(200)
+                .build();
     }
 
-    public static Category loadCategoryData(){
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(
-                    new File("src/test/resources/category.json"),
-                    Category.class
-            );
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading login JSON file.", e);
-        }
+    public static String createRandomCategoryName() {
+        return faker.commerce().department();
     }
 
-    public static User loadUserData(){
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(
-                    new File("src/test/resources/user.json"),
-                    User.class
-            );
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading login JSON file.", e);
-        }
+    public static CartRequestDTO createCartItem(Long productId) {
+        return CartRequestDTO.builder()
+            .productId(productId)
+            .quantity(faker.number().numberBetween(1, 2))
+            .build();
     }
 }

@@ -196,3 +196,7 @@ README.html
 *.iml
 .idea
 .exercism
+
+###Allure reports and results
+allure-report/
+allure-results/
